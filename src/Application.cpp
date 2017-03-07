@@ -24,22 +24,20 @@ Application::~Application(void)
 
 void Application::createScene(void)
 {
-    // Create the entity manager
-    entityMgr = std::make_shared<EntityMgr>();
-
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
-
     mCamera->lookAt(Ogre::Vector3(0, 0, 0));
-
     Ogre::Light* light = mSceneMgr->createLight("MainLight");
     light->setPosition(20.0, 80.0, 50.0);
-
-    // a fixed point in the ocean so you can see relative motion
-
-    Ogre::Entity* ogreEntityFixed = mSceneMgr->createEntity("ogre.mesh");
-    Ogre::SceneNode* sceneNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0, 100, -200));
-    sceneNode->attachObject(ogreEntityFixed);
-    sceneNode->showBoundingBox(true);
+    
+    // Create the entity manager
+    entityMgr = std::make_shared<EntityMgr>(mSceneMgr);
+    entityMgr->CreateEntity("Alien", EntityType::ENTITY_ALIEN, Ogre::Vector3(0, 0, 0), 1.5708f);
+    entityMgr->CreateEntity("Carrier", EntityType::ENTITY_CARRIER, Ogre::Vector3(0, 0, 0), 1.5708f);
+    entityMgr->CreateEntity("Destroyer", EntityType::ENTITY_DESTROYER, Ogre::Vector3(0, 0, 0), 1.5708f);
+    entityMgr->CreateEntity("Frigate", EntityType::ENTITY_FRIGATE, Ogre::Vector3(0, 0, 0), 1.5708f);
+    entityMgr->CreateEntity("Speedboat", EntityType::ENTITY_SPEEDBOAT, Ogre::Vector3(0, 0, 0), 1.5708f);
+    entityMgr->currentEntity = entityMgr->GetEntity("Alien");
+    entityMgr->currentEntity->ogreSceneNode->showBoundingBox(true);
 
     // A node to attach the camera to so we can move the camera node instead of the camera.
     cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
@@ -54,40 +52,25 @@ void Application::createScene(void)
 void Application::UpdateCamera(const Ogre::FrameEvent& fe)
 {
     float move = 400.0f;
-    float rotate = 0.1f;
+    float rotate = 0.5f;
 
     Ogre::Vector3 dirVec = Ogre::Vector3::ZERO;
 
-    if (mKeyboard->isKeyDown(OIS::KC_W))
-        dirVec.z -= move;
+    if (mKeyboard->isKeyDown(OIS::KC_W)) dirVec.z -= move;
+    if (mKeyboard->isKeyDown(OIS::KC_A)) dirVec.x -= move;
+    if (mKeyboard->isKeyDown(OIS::KC_S)) dirVec.z += move;
+    if (mKeyboard->isKeyDown(OIS::KC_D)) dirVec.x += move;
 
-    if (mKeyboard->isKeyDown(OIS::KC_S))
-        dirVec.z += move;
+    if (mKeyboard->isKeyDown(OIS::KC_R)) dirVec.y += move;
+    if (mKeyboard->isKeyDown(OIS::KC_F)) dirVec.y -= move;
 
-    if (mKeyboard->isKeyDown(OIS::KC_E))
-        dirVec.y += move;
+    if (mKeyboard->isKeyDown(OIS::KC_Q)) cameraNode->yaw(Ogre::Degree(rotate));
+    if (mKeyboard->isKeyDown(OIS::KC_E)) cameraNode->yaw(Ogre::Degree(-rotate));
 
-    if (mKeyboard->isKeyDown(OIS::KC_F))
-        dirVec.y -= move;
-
-    if (mKeyboard->isKeyDown(OIS::KC_A))
-    {
-        if (mKeyboard->isKeyDown(OIS::KC_LSHIFT))
-            cameraNode->yaw(Ogre::Degree(5 * rotate));
-        else
-            dirVec.x -= move;
-    }
-
-    if (mKeyboard->isKeyDown(OIS::KC_D))
-    {
-        if (mKeyboard->isKeyDown(OIS::KC_LSHIFT))
-            cameraNode->yaw(Ogre::Degree(-5 * rotate));
-        else
-            dirVec.x += move;
-    }
+    if (mKeyboard->isKeyDown(OIS::KC_Z)) cameraNode->pitch(Ogre::Degree(rotate));
+    if (mKeyboard->isKeyDown(OIS::KC_X)) cameraNode->pitch(Ogre::Degree(-rotate));
 
     cameraNode->translate(dirVec * fe.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
-
 }
 
 bool Application::frameRenderingQueued(const Ogre::FrameEvent& fe) 
@@ -108,38 +91,18 @@ bool Application::frameRenderingQueued(const Ogre::FrameEvent& fe)
 
 void Application::UpdateEntityMgr(const Ogre::FrameEvent& fe) 
 {
+    static const float speedStep = 0.05;
+    static const float headingStep = 0.05;
+
     keyboardTimer -= fe.timeSinceLastEvent;
 
-    if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_NUMPAD8)) {
-        keyboardTimer = keyTime;
-        velocity.z -= deltaVelocity;
-    }
-    if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_NUMPAD2)) {
-        keyboardTimer = keyTime;
-        velocity.z += deltaVelocity;
-    }
-    if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_NUMPAD4)) {
-        keyboardTimer = keyTime;
-        velocity.x -= deltaVelocity;
-    }
-    if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_NUMPAD6)) {
-        keyboardTimer = keyTime;
-        velocity.x += deltaVelocity;
-    }
-    if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_NUMPAD9)) {
-        keyboardTimer = keyTime;
-        velocity.y += deltaVelocity;
-    }
-    if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_NUMPAD3)) {
-        keyboardTimer = keyTime;
-        velocity.y -= deltaVelocity;
-    }
+    if (entityMgr->entities.size() < 1) return;
 
-    if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_SPACE)) {
+    if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_UP)) 
+    {
         keyboardTimer = keyTime;
-        velocity = Ogre::Vector3::ZERO;
+        // TODO: Update speed 
     }
-
 }
 
 void Application::MakeGround()

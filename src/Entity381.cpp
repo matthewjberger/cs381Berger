@@ -12,5 +12,5 @@ Entity381::~Entity381()
 
 void Entity381::Tick(float dt)
 {
-    // Iterate through all aspects and call tick method
+    // TODO: Iterate through all aspects and call tick method
 }

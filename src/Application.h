@@ -29,8 +29,6 @@ public:
   std::shared_ptr<EntityMgr> entityMgr;
   Ogre::SceneNode* cubeSceneNode;
   Ogre::SceneNode* cameraNode;
-  Ogre::Vector3 velocity;
-  Ogre::Vector3 position;
   float yaw;
   float deltaVelocity;
   float keyboardTimer;

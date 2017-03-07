@@ -2,6 +2,15 @@
 
 #include "Entity381.h"
 
+enum EntityType
+{
+    ENTITY_DESTROYER,
+    ENTITY_CARRIER,
+    ENTITY_SPEEDBOAT,
+    ENTITY_FRIGATE,
+    ENTITY_ALIEN
+};
+
 class Destroyer : public Entity381
 {
 public:

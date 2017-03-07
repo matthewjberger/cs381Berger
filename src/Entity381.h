@@ -2,8 +2,6 @@
 #include <OgreVector3.h>
 #include <OgreSceneNode.h>
 
-enum EntityType;
-
 class Aspect;
 
 class Entity381
