@@ -1,3 +1,9 @@
+//============================================
+// Name        : Aspects.cpp
+// Author      : Matthew J. Berger
+// Email       : matthewberger@nevada.unr.edu
+//============================================
+
 #include "Aspects.h"
 
 void PhysicsAspect::Tick(float dt)

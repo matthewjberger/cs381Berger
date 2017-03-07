@@ -1,3 +1,9 @@
+//============================================
+// Name        : Aspects.h
+// Author      : Matthew J. Berger
+// Email       : matthewberger@nevada.unr.edu
+//============================================
+
 #pragma once
 #include "Entity381.h"
 

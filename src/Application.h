@@ -1,8 +1,7 @@
 //============================================
-// Name        : Application.cpp
+// Name        : Application.h
 // Author      : Matthew J. Berger
 // Email       : matthewberger@nevada.unr.edu
-// Description : Assignment 1                 
 //============================================
 
 #ifndef __Application_h_
@@ -29,6 +28,8 @@ public:
   std::shared_ptr<EntityMgr> entityMgr;
   Ogre::SceneNode* cubeSceneNode;
   Ogre::SceneNode* cameraNode;
+  Ogre::Vector3 position;
+  Ogre::Vector3 velocity;
   float yaw;
   float deltaVelocity;
   float keyboardTimer;
@@ -36,7 +37,6 @@ public:
 
 protected:
   virtual void createScene();
-  //virtual void createCamera();
   //virtual void createViewports();
 };
 

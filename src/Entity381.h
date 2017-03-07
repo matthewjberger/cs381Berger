@@ -1,3 +1,9 @@
+//============================================
+// Name        : Entity381.h
+// Author      : Matthew J. Berger
+// Email       : matthewberger@nevada.unr.edu
+//============================================
+
 #pragma once
 #include <OgreVector3.h>
 #include <OgreSceneNode.h>

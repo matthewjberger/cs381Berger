@@ -1,3 +1,9 @@
+//============================================
+// Name        : Entity381.cpp
+// Author      : Matthew J. Berger
+// Email       : matthewberger@nevada.unr.edu
+//============================================
+
 #include "Entity381.h"
 
 Entity381::Entity381()
