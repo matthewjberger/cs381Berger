@@ -18,10 +18,6 @@ Application::Application(void)
     cubeSceneNode = 0;
 }
 
-Application::~Application(void)
-{
-}
-
 void Application::createScene(void)
 {
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
@@ -56,19 +52,19 @@ void Application::UpdateCamera(const Ogre::FrameEvent& fe)
 
     Ogre::Vector3 dirVec = Ogre::Vector3::ZERO;
 
-    if (mKeyboard->isKeyDown(OIS::KC_W)) dirVec.z -= move;
-    if (mKeyboard->isKeyDown(OIS::KC_A)) dirVec.x -= move;
-    if (mKeyboard->isKeyDown(OIS::KC_S)) dirVec.z += move;
-    if (mKeyboard->isKeyDown(OIS::KC_D)) dirVec.x += move;
+    if (mKeyboard->isKeyDown(OIS::KC_W)) { dirVec.z -= move; }
+    if (mKeyboard->isKeyDown(OIS::KC_A)) { dirVec.x -= move; }
+    if (mKeyboard->isKeyDown(OIS::KC_S)) { dirVec.z += move; }
+    if (mKeyboard->isKeyDown(OIS::KC_D)) { dirVec.x += move; }
 
-    if (mKeyboard->isKeyDown(OIS::KC_R)) dirVec.y += move;
-    if (mKeyboard->isKeyDown(OIS::KC_F)) dirVec.y -= move;
+    if (mKeyboard->isKeyDown(OIS::KC_R)) { dirVec.y += move; }
+    if (mKeyboard->isKeyDown(OIS::KC_F)) { dirVec.y -= move; }
 
-    if (mKeyboard->isKeyDown(OIS::KC_Q)) cameraNode->yaw(Ogre::Degree(rotate));
-    if (mKeyboard->isKeyDown(OIS::KC_E)) cameraNode->yaw(Ogre::Degree(-rotate));
+    if (mKeyboard->isKeyDown(OIS::KC_Q)) { cameraNode->yaw(Ogre::Degree(rotate)); }
+    if (mKeyboard->isKeyDown(OIS::KC_E)) { cameraNode->yaw(Ogre::Degree(-rotate)); }
 
-    if (mKeyboard->isKeyDown(OIS::KC_Z)) cameraNode->pitch(Ogre::Degree(rotate));
-    if (mKeyboard->isKeyDown(OIS::KC_X)) cameraNode->pitch(Ogre::Degree(-rotate));
+    if (mKeyboard->isKeyDown(OIS::KC_Z)) { cameraNode->pitch(Ogre::Degree(rotate)); }
+    if (mKeyboard->isKeyDown(OIS::KC_X)) { cameraNode->pitch(Ogre::Degree(-rotate)); }
 
     cameraNode->translate(dirVec * fe.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
 }
@@ -76,20 +72,17 @@ void Application::UpdateCamera(const Ogre::FrameEvent& fe)
 bool Application::frameRenderingQueued(const Ogre::FrameEvent& fe) 
 {
     mKeyboard->capture();
-    if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) 
-    {
-        return false;
-    }
+    if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) { return false; }
 
     mTrayMgr->frameRenderingQueued(fe);
 
     UpdateCamera(fe);
-    UpdateEntityMgr(fe);
+    UpdateSelectedEntity(fe);
     entityMgr->Tick(fe.timeSinceLastFrame);
     return true;
 }
 
-void Application::UpdateEntityMgr(const Ogre::FrameEvent& fe) 
+void Application::UpdateSelectedEntity(const Ogre::FrameEvent& fe) 
 {
     static const float speedStep = 0.05;
     static const float headingStep = 0.05;
@@ -98,10 +91,38 @@ void Application::UpdateEntityMgr(const Ogre::FrameEvent& fe)
 
     if (entityMgr->entities.size() < 1) return;
 
-    if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_UP)) 
+    auto entity(entityMgr->currentEntity);
+
+    bool timerElapsed = keyboardTimer < 0;
+
+    if (timerElapsed && mKeyboard->isKeyDown(OIS::KC_UP)) 
     {
         keyboardTimer = keyTime;
-        // TODO: Update speed 
+        entityMgr->currentEntity->desiredSpeed += speedStep;
+        if (entity->desiredSpeed > entity->maxSpeed)
+        {
+            entity->desiredSpeed = entity->maxSpeed;
+        }
+    }
+
+    if (timerElapsed && mKeyboard->isKeyDown(OIS::KC_DOWN)) 
+    {
+        keyboardTimer = keyTime;
+        entityMgr->currentEntity->desiredSpeed -= speedStep;
+        if (entity->desiredSpeed < entity->minSpeed)
+        {
+            entity->desiredSpeed = entity->minSpeed;
+        }
+    }
+
+    if (timerElapsed && mKeyboard->isKeyDown(OIS::KC_LEFT))
+    {
+        entity->desiredHeading += headingStep;
+    }
+
+    if (timerElapsed && mKeyboard->isKeyDown(OIS::KC_RIGHT))
+    {
+        entity->desiredHeading += headingStep;
     }
 }
 

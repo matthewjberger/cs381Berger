@@ -20,31 +20,31 @@ enum EntityType
 class Destroyer : public Entity381
 {
 public:
-    Destroyer(int id);
+    Destroyer(std::string id);
 };
 
 class Carrier : public Entity381
 {
 public:
-    Carrier(int id);
+    Carrier(std::string id);
 };
 
 class Speedboat : public Entity381
 {
 public:
-    Speedboat(int id);
+    Speedboat(std::string id);
 };
 
 
 class Frigate : public Entity381
 {
 public:
-    Frigate(int id);
+    Frigate(std::string id);
 };
 
 
 class Alien : public Entity381
 {
 public:
-    Alien(int id);
+    Alien(std::string id);
 };

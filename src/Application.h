@@ -14,16 +14,15 @@ class Application : public BaseApplication
 {
 public:
   Application();
-  virtual ~Application();
-  virtual bool frameRenderingQueued(const Ogre::FrameEvent& fe);
+  bool frameRenderingQueued(const Ogre::FrameEvent& fe) override;
+  bool keyPressed(const OIS::KeyEvent &arg) override { return true; };
+  bool keyReleased(const OIS::KeyEvent &arg) override { return true; };
 
   void MakeGround();
   void MakeSky();
   void MakeFog();
   void UpdateCamera(const Ogre::FrameEvent& fe);
-  void UpdateEntityMgr(const Ogre::FrameEvent& fe);
-
-  //------------------------------------------------------------
+  void UpdateSelectedEntity(const Ogre::FrameEvent& fe);
 
   std::shared_ptr<EntityMgr> entityMgr;
   Ogre::SceneNode* cubeSceneNode;
@@ -37,7 +36,6 @@ public:
 
 protected:
   virtual void createScene();
-  //virtual void createViewports();
 };
 
 #endif // #ifndef __Application_h_

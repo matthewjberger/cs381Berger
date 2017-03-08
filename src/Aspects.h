@@ -7,13 +7,13 @@
 #pragma once
 #include "Entity381.h"
 
-class PhysicsAspect : Aspect
+class PhysicsAspect : public Aspect
 {
 public:
     void Tick(float dt) override;
 };
 
-class RenderableAspect : Aspect
+class RenderableAspect : public Aspect
 {
 public:
     void Tick(float dt) override;

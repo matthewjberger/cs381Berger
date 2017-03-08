@@ -8,15 +8,27 @@
 
 Entity381::Entity381()
 {
-    // TODO: Set default entity member values
-}
-
-Entity381::~Entity381()
-{
-    
+    entityId = "default";
+    minSpeed = 0.0f;
+    maxSpeed = 0.0f;
+    speed = 0.0f;
+    desiredSpeed = 0.0f;
+    heading = 0.0f;
+    desiredHeading = 0.0f;
+    acceleration = 0.0f;
+    turningRate = 0.0f;
+    meshName = "ogre.mesh";
+    position = Ogre::Vector3::ZERO;
+    velocity = Ogre::Vector3::ZERO;
+    ogreSceneNode = nullptr;
+    ogreEntity = nullptr;
+    rotation = Ogre::Quaternion::IDENTITY;
 }
 
 void Entity381::Tick(float dt)
 {
-    // TODO: Iterate through all aspects and call tick method
+    for (std::pair<std::string, std::shared_ptr<Aspect>> aspect : aspects)
+    {
+        aspect.second->Tick(dt);
+    }
 }
