@@ -9,7 +9,7 @@
 #include "windows.h"
 #endif
 
-#include "Application.h"
+#include "As2.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,11 +1,11 @@
 //============================================
-// Name        : Application.cpp
+// Name        : As2.cpp
 // Author      : Matthew J. Berger
 // Email       : matthewberger@nevada.unr.edu
 // Description : Assignment 1                 
 //============================================
 
-#include "Application.h"
+#include "As2.h"
 
 Application::Application(void)
 {

@@ -1,5 +1,5 @@
 //============================================
-// Name        : Application.h
+// Name        : As2.h
 // Author      : Matthew J. Berger
 // Email       : matthewberger@nevada.unr.edu
 //============================================
