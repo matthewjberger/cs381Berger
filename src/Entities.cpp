@@ -31,7 +31,7 @@ Speedboat::Speedboat(std::string id)
     entityName = "Speedboat";
     meshName = "cigarette.mesh";
     maxSpeed = 140;
-    acceleration = 0.125;
+    acceleration = 0.3;
     turningRate = 0.005;
 }
 
@@ -41,8 +41,8 @@ Frigate::Frigate(std::string id)
     entityName = "Frigate";
     meshName = "sleek.mesh";
     maxSpeed = 120;
-    acceleration = 0.1;
-    turningRate = 0.004;
+    acceleration = 0.2;
+    turningRate = 0.04;
 }
 
 Alien::Alien(std::string id)

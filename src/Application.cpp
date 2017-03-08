@@ -87,8 +87,8 @@ bool Application::frameRenderingQueued(const Ogre::FrameEvent& fe)
 
 void Application::UpdateSelectedEntity(const Ogre::FrameEvent& fe) 
 {
-    static const float speedStep = 0.05;
-    static const float headingStep = 0.05;
+    static const float speedStep = 0.4;
+    static const float headingStep = 0.02;
 
     keyboardTimer -= fe.timeSinceLastEvent;
 
@@ -125,7 +125,7 @@ void Application::UpdateSelectedEntity(const Ogre::FrameEvent& fe)
 
     if (timerElapsed && mKeyboard->isKeyDown(OIS::KC_RIGHT))
     {
-        entity->desiredHeading += headingStep;
+        entity->desiredHeading -= headingStep;
     }
 }
 
