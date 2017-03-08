@@ -15,16 +15,15 @@ class Application : public BaseApplication
 public:
   Application();
   bool frameRenderingQueued(const Ogre::FrameEvent& fe) override;
-  bool keyPressed(const OIS::KeyEvent &arg) override { return true; };
-  bool keyReleased(const OIS::KeyEvent &arg) override { return true; };
 
   void MakeGround();
   void MakeSky();
   void MakeFog();
   void UpdateCamera(const Ogre::FrameEvent& fe);
   void UpdateSelectedEntity(const Ogre::FrameEvent& fe);
+  void UpdateSelection(const Ogre::FrameEvent& fe);
 
-  std::shared_ptr<EntityMgr> entityMgr;
+  EntityMgr* entityMgr;
   Ogre::SceneNode* cubeSceneNode;
   Ogre::SceneNode* cameraNode;
   Ogre::Vector3 position;
@@ -33,6 +32,8 @@ public:
   float deltaVelocity;
   float keyboardTimer;
   float keyTime;
+  float cycleTimer;
+  float cycleTime;
 
 protected:
   virtual void createScene();

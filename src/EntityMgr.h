@@ -13,11 +13,12 @@
 class EntityMgr
 {
 public:
-    explicit EntityMgr(Ogre::SceneManager* sceneMgr_) : sceneMgr(sceneMgr_){}
-    std::map<const std::string, std::shared_ptr<Entity381>> entities;
-    std::shared_ptr<Entity381> currentEntity;
-    std::shared_ptr<Entity381> CreateEntity(std::string id, EntityType type, Ogre::Vector3 pos, float heading);
-    std::shared_ptr<Entity381> GetEntity(std::string id);
+    explicit EntityMgr(Ogre::SceneManager* sceneMgr_)
+        : currentEntity(nullptr), sceneMgr(sceneMgr_) {}
+    std::map<const std::string, Entity381*> entities;
+    Entity381* currentEntity;
+    Entity381* CreateEntity(std::string id, EntityType type, Ogre::Vector3 pos, float heading);
+    Entity381* GetEntity(std::string id);
     void Tick(float dt);
 private:
     Ogre::SceneManager* sceneMgr;

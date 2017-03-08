@@ -15,7 +15,9 @@ Application::Application(void)
     velocity = Ogre::Vector3::ZERO;
     keyTime = 0.01f;
     keyboardTimer = keyTime;
-    cubeSceneNode = 0;
+    cycleTime = 0.30;
+    cycleTimer = cycleTime;
+    cubeSceneNode = nullptr;
 }
 
 void Application::createScene(void)
@@ -26,12 +28,12 @@ void Application::createScene(void)
     light->setPosition(20.0, 80.0, 50.0);
     
     // Create the entity manager
-    entityMgr = std::make_shared<EntityMgr>(mSceneMgr);
-    entityMgr->CreateEntity("Alien", EntityType::ENTITY_ALIEN, Ogre::Vector3(0, 0, 0), 1.5708f);
-    entityMgr->CreateEntity("Carrier", EntityType::ENTITY_CARRIER, Ogre::Vector3(0, 0, 0), 1.5708f);
-    entityMgr->CreateEntity("Destroyer", EntityType::ENTITY_DESTROYER, Ogre::Vector3(0, 0, 0), 1.5708f);
-    entityMgr->CreateEntity("Frigate", EntityType::ENTITY_FRIGATE, Ogre::Vector3(0, 0, 0), 1.5708f);
-    entityMgr->CreateEntity("Speedboat", EntityType::ENTITY_SPEEDBOAT, Ogre::Vector3(0, 0, 0), 1.5708f);
+    entityMgr = new EntityMgr(mSceneMgr);
+    entityMgr->CreateEntity("Alien", EntityType::ENTITY_ALIEN, Ogre::Vector3(-200, 0, 0), 1.5708f);
+    entityMgr->CreateEntity("Carrier", EntityType::ENTITY_CARRIER, Ogre::Vector3(100, 0, 0), 1.5708f);
+    entityMgr->CreateEntity("Destroyer", EntityType::ENTITY_DESTROYER, Ogre::Vector3(400, 0, 0), 1.5708f);
+    entityMgr->CreateEntity("Frigate", EntityType::ENTITY_FRIGATE, Ogre::Vector3(600, 0, 0), 1.5708f);
+    entityMgr->CreateEntity("Speedboat", EntityType::ENTITY_SPEEDBOAT, Ogre::Vector3(800, 0, 0), 1.5708f);
     entityMgr->currentEntity = entityMgr->GetEntity("Alien");
     entityMgr->currentEntity->ogreSceneNode->showBoundingBox(true);
 
@@ -79,6 +81,7 @@ bool Application::frameRenderingQueued(const Ogre::FrameEvent& fe)
     UpdateCamera(fe);
     UpdateSelectedEntity(fe);
     entityMgr->Tick(fe.timeSinceLastFrame);
+    UpdateSelection(fe);
     return true;
 }
 
@@ -93,7 +96,7 @@ void Application::UpdateSelectedEntity(const Ogre::FrameEvent& fe)
 
     auto entity(entityMgr->currentEntity);
 
-    bool timerElapsed = keyboardTimer < 0;
+    auto timerElapsed = keyboardTimer < 0;
 
     if (timerElapsed && mKeyboard->isKeyDown(OIS::KC_UP)) 
     {
@@ -126,6 +129,34 @@ void Application::UpdateSelectedEntity(const Ogre::FrameEvent& fe)
     }
 }
 
+void Application::UpdateSelection(const Ogre::FrameEvent& fe)
+{
+    cycleTimer -= fe.timeSinceLastFrame;
+    
+    auto timerElapsed = cycleTimer < 0;
+    if(timerElapsed && mKeyboard->isKeyDown(OIS::KC_TAB))
+    {
+        cycleTimer = cycleTime;
+        auto currentEntity = entityMgr->currentEntity;
+        auto lastEntityIter = entityMgr->entities.end();
+        --lastEntityIter;
+        auto lastEntity = lastEntityIter->second;
+        currentEntity->ogreSceneNode->showBoundingBox(false);
+        if (currentEntity->entityId == lastEntity->entityId)
+        {
+            entityMgr->currentEntity = entityMgr->entities.begin()->second;
+        }
+        else
+        {
+            auto nextEntityIter = entityMgr->entities.find(currentEntity->entityId);
+            ++nextEntityIter;
+            auto nextEntity = nextEntityIter->second;
+            entityMgr->currentEntity = nextEntity;
+        }
+        entityMgr->currentEntity->ogreSceneNode->showBoundingBox(true);
+    }
+}
+
 void Application::MakeGround()
 {
 
@@ -143,8 +174,8 @@ void Application::MakeGround()
     Ogre::Entity* groundEntity = mSceneMgr->createEntity("ground");
     mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
     groundEntity->setCastShadows(false);
-    //groundEntity->setMaterialName("Ocean2_HLSL_GLSL");
-    groundEntity->setMaterialName("OceanHLSL_GLSL");
+    groundEntity->setMaterialName("Ocean2_HLSL_GLSL");
+    //groundEntity->setMaterialName("OceanHLSL_GLSL");
     //groundEntity->setMaterialName("Ocean2_Cg");
     //groundEntity->setMaterialName("NavyCg");
 
@@ -152,8 +183,7 @@ void Application::MakeGround()
 
 void Application::MakeSky() 
 {
-
-    mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");
+    mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 }
 
 void Application::MakeFog()

@@ -13,10 +13,33 @@ void PhysicsAspect::Tick(float dt)
     {
         parentEntity->speed += parentEntity->acceleration;
     }
+    else if(parentEntity->desiredSpeed > parentEntity->speed)
+    {
+        parentEntity->speed -= (2 * parentEntity->acceleration);
+    }
 
     // Update heading
     if(parentEntity->heading < parentEntity->desiredHeading)
     {
+        if((parentEntity->desiredHeading - parentEntity->heading) < parentEntity->turningRate)
+        {
+            parentEntity->heading = parentEntity->desiredHeading;
+        }
+        else if((parentEntity->desiredHeading - parentEntity->heading) > parentEntity->turningRate)
+        {
+            parentEntity->heading += parentEntity->turningRate;
+        }
+    }
+    else
+    {
+        if((parentEntity->heading - parentEntity->desiredHeading) < parentEntity->turningRate)
+        {
+            parentEntity->heading = parentEntity->desiredHeading;
+        }
+        else if((parentEntity->heading - parentEntity->desiredHeading) > parentEntity->turningRate)
+        {
+            parentEntity->heading -= parentEntity->turningRate;
+        }
     }
 
     // Update velocity

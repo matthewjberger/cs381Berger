@@ -17,7 +17,7 @@ public:
 
     void Tick(float dt);
 
-    std::map<const std::string, std::shared_ptr<Aspect>> aspects;
+    std::map<const std::string, Aspect*> aspects;
     std::string entityId;
     std::string entityName;
     float minSpeed, maxSpeed;
@@ -28,8 +28,8 @@ public:
     std::string meshName;
     Ogre::Vector3 position;
     Ogre::Vector3 velocity;
-    std::shared_ptr<Ogre::SceneNode> ogreSceneNode;
-    std::shared_ptr<Ogre::Entity> ogreEntity;
+    Ogre::SceneNode* ogreSceneNode;
+    Ogre::Entity* ogreEntity;
     Ogre::Quaternion rotation;
 };
 
@@ -38,5 +38,5 @@ class Aspect
 public:
     virtual ~Aspect(){}
     virtual void Tick(float dt){}
-    std::shared_ptr<Entity381> parentEntity;
+    Entity381* parentEntity;
 };

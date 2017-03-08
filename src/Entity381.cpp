@@ -27,7 +27,7 @@ Entity381::Entity381()
 
 void Entity381::Tick(float dt)
 {
-    for (std::pair<std::string, std::shared_ptr<Aspect>> aspect : aspects)
+    for (std::pair<std::string, Aspect*> aspect : aspects)
     {
         aspect.second->Tick(dt);
     }
