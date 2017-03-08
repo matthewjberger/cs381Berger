@@ -23,6 +23,9 @@ public:
   void UpdateSelectedEntity(const Ogre::FrameEvent& fe);
   void UpdateSelection(const Ogre::FrameEvent& fe);
 
+  bool keyPressed(const OIS::KeyEvent &arg) override { return true; }
+  bool keyReleased(const OIS::KeyEvent &arg) override { return true; }
+
   EntityMgr* entityMgr;
   Ogre::SceneNode* cubeSceneNode;
   Ogre::SceneNode* cameraNode;
@@ -36,7 +39,7 @@ public:
   float cycleTime;
 
 protected:
-  virtual void createScene();
+  void createScene() override;
 };
 
 #endif // #ifndef __Application_h_

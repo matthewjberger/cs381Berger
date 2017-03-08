@@ -29,11 +29,11 @@ void Application::createScene(void)
     
     // Create the entity manager
     entityMgr = new EntityMgr(mSceneMgr);
-    entityMgr->CreateEntity("Alien", EntityType::ENTITY_ALIEN, Ogre::Vector3(-200, 0, 0), 1.5708f);
-    entityMgr->CreateEntity("Carrier", EntityType::ENTITY_CARRIER, Ogre::Vector3(100, 0, 0), 1.5708f);
-    entityMgr->CreateEntity("Destroyer", EntityType::ENTITY_DESTROYER, Ogre::Vector3(400, 0, 0), 1.5708f);
-    entityMgr->CreateEntity("Frigate", EntityType::ENTITY_FRIGATE, Ogre::Vector3(600, 0, 0), 1.5708f);
-    entityMgr->CreateEntity("Speedboat", EntityType::ENTITY_SPEEDBOAT, Ogre::Vector3(800, 0, 0), 1.5708f);
+    entityMgr->CreateEntity("Alien",     EntityType::ENTITY_ALIEN,     Ogre::Vector3(-200, 0, 0), 1.5);
+    entityMgr->CreateEntity("Carrier",   EntityType::ENTITY_CARRIER,   Ogre::Vector3( 100, 0, 0), 1.5);
+    entityMgr->CreateEntity("Destroyer", EntityType::ENTITY_DESTROYER, Ogre::Vector3( 400, 0, 0), 1.5);
+    entityMgr->CreateEntity("Frigate",   EntityType::ENTITY_FRIGATE,   Ogre::Vector3( 600, 0, 0), 1.5);
+    entityMgr->CreateEntity("Speedboat", EntityType::ENTITY_SPEEDBOAT, Ogre::Vector3( 800, 0, 0), 1.5);
     entityMgr->currentEntity = entityMgr->GetEntity("Alien");
     entityMgr->currentEntity->ogreSceneNode->showBoundingBox(true);
 
