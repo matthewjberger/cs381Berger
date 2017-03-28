@@ -1,27 +1,16 @@
 //============================================
-// Name        : EntityMgr.cpp
+// Name        : As3.h
 // Author      : Matthew J. Berger
 // Email       : matthewberger@nevada.unr.edu
 //============================================
 
-#include "EntityMgr.h"
+#pragma once
 
-void EntityMgr::tick(float dt)
+#include "Engine.h"
+
+class As3
 {
-
-}
-
-void EntityMgr::init()
-{
-
-}
-
-void EntityMgr::load_level()
-{
-
-}
-
-void EntityMgr::stop()
-{
-
-}
+public:
+	As3();
+	~As3();
+};

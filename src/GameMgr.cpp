@@ -1,27 +1,27 @@
 //============================================
-// Name        : EntityMgr.cpp
+// Name        : GameMgr.cpp
 // Author      : Matthew J. Berger
 // Email       : matthewberger@nevada.unr.edu
 //============================================
 
-#include "EntityMgr.h"
+#include "gameMgr.h"
 
-void EntityMgr::tick(float dt)
+void GameMgr::tick(float dt)
 {
 
 }
 
-void EntityMgr::init()
+void GameMgr::init()
 {
 
 }
 
-void EntityMgr::load_level()
+void GameMgr::load_level()
 {
 
 }
 
-void EntityMgr::stop()
+void GameMgr::stop()
 {
 
 }

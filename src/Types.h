@@ -1,27 +1,20 @@
 //============================================
-// Name        : EntityMgr.cpp
+// Name        : Types.h 
 // Author      : Matthew J. Berger
 // Email       : matthewberger@nevada.unr.edu
 //============================================
 
-#include "EntityMgr.h"
+#ifndef TYPES_H_
+#define TYPES_H_
 
-void EntityMgr::tick(float dt)
-{
 
-}
+enum class EntityType {
+	DDG,
+	CVN,
+	FRIGATE,
+	CIGARETTE,
+	ALIEN
+};
 
-void EntityMgr::init()
-{
 
-}
-
-void EntityMgr::load_level()
-{
-
-}
-
-void EntityMgr::stop()
-{
-
-}
+#endif /* TYPES_H_ */
