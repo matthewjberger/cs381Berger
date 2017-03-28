@@ -40,7 +40,6 @@ public:
     void loadLevel() override;
     void stop() override;
 
-    bool receivedAbort;
     Ogre::Root* root;
     Ogre::RenderWindow* window;
     OIS::InputManager* mInputManager;

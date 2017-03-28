@@ -7,22 +7,18 @@
 #include "GfxMgr.h"
 #include "Engine.h"
 
-GfxMgr::~GfxMgr()
-{
-    delete mRoot;
-}
-
 void GfxMgr::tick(float dt)
 {
     mRoot->renderOneFrame();
 }
 
-void GfxMgr::init()
+void GfxMgr::InitResources()
 {
     mResourcesCfg = Ogre::StringUtil::BLANK;
     mPluginsCfg = Ogre::StringUtil::BLANK;
-    ogreSceneMgr = 0;
-    mCamera = 0;
+    ogreSceneMgr = nullptr;
+    mCamera = nullptr;
+    mCameraNode = nullptr;
 
 #ifdef _DEBUG
     mResourcesCfg = "resources_d.cfg";
@@ -60,12 +56,15 @@ void GfxMgr::init()
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
     ogreSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC);
+}
 
+void GfxMgr::init()
+{
     // camera
     mCamera = ogreSceneMgr->createCamera("MainCam");
-    mCamera->setPosition(0, 0, 80);
-    mCamera->lookAt(0, 0, -300);
-    mCamera->setNearClipDistance(5);
+    //mCamera->setPosition(0, 0, 80);
+    //mCamera->lookAt(0, 0, -300);
+    //mCamera->setNearClipDistance(5);
 
     // viewport
     Ogre::Viewport* vp = mWindow->addViewport(mCamera);
@@ -74,29 +73,62 @@ void GfxMgr::init()
         Ogre::Real(vp->getActualWidth()) /
         Ogre::Real(vp->getActualHeight()));
 
-    // scene
-    Ogre::Entity* ogreEntity = ogreSceneMgr->createEntity("ogrehead.mesh");
-    Ogre::SceneNode* ogreNode = ogreSceneMgr->getRootSceneNode()->createChildSceneNode();
-    ogreNode->attachObject(ogreEntity);
+    // TODO: Put this in game manager
+    // TODO: Add As3 doc to source control
+    /* Scene */
 
+    // Entities
     engine->entityMgr->CreateEntity(EntityType::ALIEN, Ogre::Vector3(-200, 0, 0), 1.5);
     engine->entityMgr->CreateEntity(EntityType::CIGARETTE, Ogre::Vector3(100, 0, 0), 1.5);
     engine->entityMgr->CreateEntity(EntityType::CVN, Ogre::Vector3(400, 0, 0), 1.5);
     engine->entityMgr->CreateEntity(EntityType::FRIGATE, Ogre::Vector3(600, 0, 0), 1.5);
-    engine->entityMgr->CreateEntity(EntityType::DDG, Ogre::Vector3(800, 0, 0), 1.5);
+    engine->entityMgr->selectedEntity = engine->entityMgr->CreateEntity(EntityType::DDG, Ogre::Vector3(800, 0, 0), 1.5);
 
+    // Light
     ogreSceneMgr->setAmbientLight(Ogre::ColourValue(.5, .5, .5));
-
     Ogre::Light* light = ogreSceneMgr->createLight("MainLight");
     light->setPosition(20, 80, 50);
-}
 
-void GfxMgr::load_level()
-{
-
+    // Environment
+    MakeGround();
+    MakeSky();
 }
 
 void GfxMgr::stop()
 {
-    delete mRoot;
+    if (mRoot) delete mRoot;
+}
+
+void GfxMgr::MakeGround()
+{
+    Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
+
+    Ogre::MeshManager::getSingleton().createPlane(
+        "ground",
+        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        plane,
+        15000, 15000, 20, 20,
+        true,
+        1, 5, 5,
+        Ogre::Vector3::UNIT_Z);
+
+    Ogre::Entity* groundEntity = ogreSceneMgr->createEntity("ground");
+    ogreSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
+    groundEntity->setCastShadows(false);
+    groundEntity->setMaterialName("Ocean2_HLSL_GLSL");
+    //groundEntity->setMaterialName("OceanHLSL_GLSL");
+    //groundEntity->setMaterialName("Ocean2_Cg");
+    //groundEntity->setMaterialName("NavyCg");}
+}
+
+void GfxMgr::MakeSky()
+{
+    ogreSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
+}
+
+void GfxMgr::MakeFog()
+{
+    Ogre::ColourValue fadeColour(0.9, 0.9, 0.9);
+    mWindow->getViewport(0)->setBackgroundColour(fadeColour);
+    this->ogreSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0, 600, 900);
 }

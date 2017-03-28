@@ -19,13 +19,12 @@ void InputMgr::tick(float dt)
     if (mKeyboard->isKeyDown(OIS::KC_ESCAPE))
     {
         Ogre::LogManager::getSingletonPtr()->logMessage("Pressed Escape.");
-        receivedAbort = true;
+        engine->keepRunning = false;
     }
 }
 
 void InputMgr::init()
 {
-    receivedAbort = false;
     window = engine->gfxMgr->mWindow;
     root = engine->gfxMgr->mRoot;
     mInputManager = 0;

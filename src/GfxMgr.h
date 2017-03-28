@@ -65,12 +65,12 @@ class GfxMgr : public Mgr {
 public:
 
     GfxMgr(Engine *eng) : Mgr(eng) {}
-    ~GfxMgr();
+    ~GfxMgr(){}
 
-    void tick(float dt);
-    void init();
-    void load_level();
-    void stop();
+    void tick(float dt) override;
+    void init() override;
+    void loadLevel() override {};
+    void stop() override;
 
     Ogre::Root* mRoot;
     Ogre::RenderWindow* mWindow;
@@ -78,4 +78,11 @@ public:
     Ogre::String mPluginsCfg;
     Ogre::SceneManager* ogreSceneMgr;
     Ogre::Camera* mCamera;
+    Ogre::SceneNode* mCameraNode;
+
+private:
+    void InitResources();
+    void MakeGround();
+    void MakeSky();
+    void MakeFog();
 };
