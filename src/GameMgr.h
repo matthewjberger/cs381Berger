@@ -12,10 +12,10 @@ class GameMgr : public Mgr
 {
 public:
 
-	GameMgr(Engine *eng) : Mgr(eng) {}
+    GameMgr(Engine *eng) : Mgr(eng) {}
 
-	void tick(float dt);
-	void init();
-	void load_level();
-	void stop();
+    void tick(float dt);
+    void init();
+    void load_level();
+    void stop();
 };

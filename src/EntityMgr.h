@@ -1,23 +1,50 @@
-//============================================
-// Name        : EntityMgr.h
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
-
-#include "mgr.h"
+/*
+ * EntityMgr.h
+ *
+ *  Created on: Feb 22, 2017
+ *      Author: sushil
+ */
 
 #ifndef ENTITYMGR_H_
 #define ENTITYMGR_H_
 
-class EntityMgr : public Mgr {
+
+#include <list>
+#include <OgreVector3.h>
+#include <OgreSceneManager.h>
+#include <OgreSceneNode.h>
+#include <OgreEntity.h>
+
+#include "Entity381.h"
+#include "mgr.h"
+
+class Engine;
+
+class EntityMgr: public Mgr {
+
+private:
+	std::list<Entity381 *> entities;
+	//
 public:
 
-	EntityMgr(Engine *eng) : Mgr(eng) {}
+//	Ogre::SceneManager *ogreSceneMgr;
+	Entity381* selectedEntity;
 
-	void tick(float dt);
-	void init();
-	void load_level();
-	void stop();
+	EntityMgr(Engine *eng);
+	//EntityMgr(Ogre::SceneManager *ogreSceneMgr);
+	~EntityMgr();
+
+	virtual void init();
+	virtual void tick(float dt);
+	virtual void loadLevel();
+	virtual void stop();
+
+	Entity381 *CreateEntity(EntityType entityType, Ogre::Vector3 pos, float yaw = 0);
+	void CreateOgreEntityAndNode(Entity381 *ent);
+	//void Tick(float dt);
+	void SelectNextEntity();
+
+
 };
 
 

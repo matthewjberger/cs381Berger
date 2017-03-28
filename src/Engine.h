@@ -1,17 +1,20 @@
-//============================================
-// Name        : Engine.h
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
+/*
+ * engine.h
+ *
+ *  Created on: Mar 9, 2017
+ *      Author: sushil
+ */
 
-#pragma once
+#ifndef ENGINE_H_
+#define ENGINE_H_
 
 #include "GfxMgr.h"
-#include "inputMgr.h"
+#include "InputMgr.h"
 #include "EntityMgr.h"
-#include "gameMgr.h"
+#include "GameMgr.h"
 
 class Engine {
+private:
 public:
 	Engine();
 	~Engine();
@@ -30,5 +33,12 @@ public:
 	void stop();
 	void shutdown();
 
+	//
 	bool keepRunning;
+
+
 };
+
+
+
+#endif /* ENGINE_H_ */

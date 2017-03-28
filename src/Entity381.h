@@ -1,8 +1,9 @@
-//============================================
-// Name        : Entity381.h
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
+/*
+ * Entity.h
+ *
+ *  Created on: Feb 22, 2017
+ *      Author: sushil
+ */
 
 #ifndef ENTITY381_H_
 #define ENTITY381_H_
@@ -56,7 +57,7 @@ public:
 	std::list<Aspect*> aspects;
 };
 
-class Ddg : public Entity381 {
+class Ddg: public Entity381 {
 
 public:
 	Ddg(Ogre::Vector3 pos, float heading);
@@ -64,28 +65,28 @@ public:
 
 };
 
-class Cigarette : public Entity381 {
+class Cigarette: public Entity381 {
 
 public:
 	Cigarette(Ogre::Vector3 pos, float heading);
 	~Cigarette();
 };
 
-class Alien : public Entity381 {
+class Alien: public Entity381 {
 
 public:
 	Alien(Ogre::Vector3 pos, float heading);
 	~Alien();
 };
 
-class Cvn : public Entity381 {
+class Cvn: public Entity381 {
 
 public:
 	Cvn(Ogre::Vector3 pos, float heading);
 	~Cvn();
 };
 
-class Frigate : public Entity381 {
+class Frigate: public Entity381 {
 
 public:
 	Frigate(Ogre::Vector3 pos, float heading);

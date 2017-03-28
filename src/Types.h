@@ -1,8 +1,9 @@
-//============================================
-// Name        : Types.h 
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
+/*
+ * Types.h
+ *
+ *  Created on: Feb 22, 2017
+ *      Author: sushil
+ */
 
 #ifndef TYPES_H_
 #define TYPES_H_

@@ -1,8 +1,9 @@
-//============================================
-// Name        : Mgr.h 
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
+/*
+ * mgr.h
+ *
+ *  Created on: Mar 9, 2017
+ *      Author: sushil
+ */
 
 #ifndef MGR_H_
 #define MGR_H_
@@ -18,7 +19,7 @@ public:
 
 	virtual void tick(float dt);
 	virtual void init();
-	virtual void load_level();
+	virtual void loadLevel();
 	virtual void stop();
 };
 

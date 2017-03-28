@@ -1,16 +1,16 @@
-//============================================
-// Name        : Entity381.cpp
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
+/*
+ * Entity381.cpp
+ *
+ *  Created on: Feb 22, 2017
+ *      Author: sushil
+ */
 
 #include "Entity381.h"
 #include "Aspect.h"
 
 unsigned int Entity381::nextId = 0;
 
-Entity381::Entity381(EntityType entType, Ogre::Vector3 pos, float heading)
-{
+Entity381::Entity381(EntityType entType, Ogre::Vector3 pos, float heading){
 	entityType = entType;
 	this->pos = pos;
 	this->heading = heading;
@@ -30,12 +30,11 @@ Entity381::Entity381(EntityType entType, Ogre::Vector3 pos, float heading)
 	DefaultInit();
 }
 
-Entity381::~Entity381()
-{
+Entity381::~Entity381(){
+
 }
 
-void Entity381::DefaultInit()
-{
+void Entity381::DefaultInit(){
 	this->acceleration = 0.5f;
 	this->turnRate = 0.2f;
 
@@ -49,69 +48,64 @@ void Entity381::DefaultInit()
 
 }
 
-void Entity381::Tick(float dt) {
-	for (std::list<Aspect*>::const_iterator ai = aspects.begin(); ai != aspects.end(); ++ai) 
-    {
+void Entity381::Tick(float dt){
+	for(std::list<Aspect*>::const_iterator ai = aspects.begin(); ai != aspects.end(); ++ai){
 		(*ai)->Tick(dt);
 	}
 }
 
-Ddg::Ddg(Ogre::Vector3 pos, float heading) : Entity381(EntityType::DDG, pos, heading)
-{
+Ddg::Ddg(Ogre::Vector3 pos, float heading) : Entity381(EntityType::DDG, pos, heading){
 	this->meshfile = "ddg51.mesh";
 	this->acceleration = 1.0f;
 	this->turnRate = 0.1f;
 }
 
-Ddg::~Ddg()
-{
+Ddg::~Ddg(){
 
 }
 
-Cigarette::Cigarette(Ogre::Vector3 pos, float heading) : Entity381(EntityType::CIGARETTE, pos, heading)
-{
+Cigarette::Cigarette(Ogre::Vector3 pos, float heading) : Entity381(EntityType::CIGARETTE, pos, heading){
 	this->meshfile = "cigarette.mesh";
 	this->acceleration = 1.5f;
 	this->turnRate = 0.3f;
 }
 
-Cigarette::~Cigarette()
-{
+Cigarette::~Cigarette(){
 
 }
 
-Alien::Alien(Ogre::Vector3 pos, float heading) : Entity381(EntityType::ALIEN, pos, heading)
-{
+Alien::Alien(Ogre::Vector3 pos, float heading) : Entity381(EntityType::ALIEN, pos, heading){
 	this->meshfile = "alienship.mesh";
 	this->turnRate = 0.5f;
 	this->acceleration = 1.8f;
 }
 
-Alien::~Alien()
-{
+Alien::~Alien(){
 
 }
 
-Cvn::Cvn(Ogre::Vector3 pos, float heading) : Entity381(EntityType::CVN, pos, heading)
-{
+Cvn::Cvn(Ogre::Vector3 pos, float heading) : Entity381(EntityType::CVN, pos, heading){
 	this->meshfile = "cvn68.mesh";
 	this->turnRate = 0.05f;
 	this->acceleration = 0.75f;
 }
 
-Cvn::~Cvn() 
-{
+Cvn::~Cvn(){
 
 }
 
-Frigate::Frigate(Ogre::Vector3 pos, float heading) : Entity381(EntityType::FRIGATE, pos, heading) 
-{
+Frigate::Frigate(Ogre::Vector3 pos, float heading) : Entity381(EntityType::FRIGATE, pos, heading){
 	this->meshfile = "sleek.mesh";
 	this->turnRate = 0.15f;
 	this->acceleration = 1.1f;
 }
 
-Frigate::~Frigate()
-{
+Frigate::~Frigate(){
 
 }
+
+
+
+
+
+

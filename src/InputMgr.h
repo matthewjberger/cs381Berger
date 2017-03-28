@@ -3,6 +3,7 @@
 // Author      : Matthew J. Berger
 // Email       : matthewberger@nevada.unr.edu
 //============================================
+#pragma once
 
 #include "mgr.h"
 
@@ -24,30 +25,30 @@
 #  include <SdkCameraMan.h>
 #endif
 
-class InputMgr : 
-	public Mgr,
-	public Ogre::WindowEventListener,
-	public Ogre::FrameListener 
+class InputMgr :
+    public Mgr,
+    public Ogre::WindowEventListener,
+    public Ogre::FrameListener
 {
 
 public:
 
-	InputMgr(Engine *eng) : Mgr(eng) {}
+    InputMgr(Engine *eng) : Mgr(eng) {}
 
-	void tick(float dt);
-	void initialize(Ogre::RenderWindow* _window, Ogre::Root* _root);
-	void load_level();
-	void stop();
+    void tick(float dt) override;
+    void init() override;
+    void loadLevel() override;
+    void stop() override;
 
-	bool receivedAbort;
-	Ogre::Root* root;
-	Ogre::RenderWindow* window;
-	OIS::InputManager* mInputManager;
-	OIS::Mouse* mMouse;
-	OIS::Keyboard* mKeyboard;
+    bool receivedAbort;
+    Ogre::Root* root;
+    Ogre::RenderWindow* window;
+    OIS::InputManager* mInputManager;
+    OIS::Mouse* mMouse;
+    OIS::Keyboard* mKeyboard;
 
 private:
-	virtual void windowResized(Ogre::RenderWindow* rw);
-	virtual void windowClosed(Ogre::RenderWindow* rw);
+    virtual void windowResized(Ogre::RenderWindow* rw);
+    virtual void windowClosed(Ogre::RenderWindow* rw);
 
 };

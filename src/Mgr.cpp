@@ -1,21 +1,22 @@
-//============================================
-// Name        : Mgr.cpp
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
+/*
+ * mgr.cpp
+ *
+ *  Created on: Mar 9, 2017
+ *      Author: sushil
+ */
 
-#include "mgr.h"
+#include "mgr.h""
 
-Mgr::Mgr(Engine *eng) {
+Mgr::Mgr(Engine *eng){
 	engine = eng;
 }
-Mgr::~Mgr() {
+Mgr::~Mgr(){
 }
-void Mgr::tick(float dt) {
+void Mgr::tick(float dt){
 }
-void Mgr::init() {
+void Mgr::init(){
 }
-void Mgr::load_level() {
+void Mgr::loadLevel(){
 }
-void Mgr::stop() {
+void Mgr::stop(){
 }

@@ -64,18 +64,18 @@ class OgreGraphics;
 class GfxMgr : public Mgr {
 public:
 
-	GfxMgr(Engine *eng) : Mgr(eng) {}
-	~GfxMgr();
+    GfxMgr(Engine *eng) : Mgr(eng) {}
+    ~GfxMgr();
 
-	void tick(float dt);
-	void init();
-	void load_level();
-	void stop();
+    void tick(float dt);
+    void init();
+    void load_level();
+    void stop();
 
-	Ogre::Root* mRoot;
-	Ogre::String mResourcesCfg;
-	Ogre::String mPluginsCfg;
-	Ogre::RenderWindow* mWindow;
-	Ogre::SceneManager* mSceneMgr;
-	Ogre::Camera* mCamera;
+    Ogre::Root* mRoot;
+    Ogre::RenderWindow* mWindow;
+    Ogre::String mResourcesCfg;
+    Ogre::String mPluginsCfg;
+    Ogre::SceneManager* ogreSceneMgr;
+    Ogre::Camera* mCamera;
 };
