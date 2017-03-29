@@ -5,7 +5,7 @@
 //============================================
 
 #include "GfxMgr.h"
-#include "Engine.h"
+#include "engine.h"
 
 void GfxMgr::tick(float dt)
 {

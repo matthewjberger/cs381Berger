@@ -4,9 +4,9 @@
 // Email       : matthewberger@nevada.unr.edu
 //============================================
 
-#include "gameMgr.h"
+#include "GameMgr.h"
 #include "Types.h"
-#include "Engine.h"
+#include "engine.h"
 #include <OgreVector3.h>
 
 void GameMgr::tick(float dt)

@@ -4,8 +4,8 @@
 // Email       : matthewberger@nevada.unr.edu
 //============================================
 
-#include "inputMgr.h"
-#include "Engine.h"
+#include "InputMgr.h"
+#include "engine.h"
 
 void InputMgr::tick(float dt)
 {
