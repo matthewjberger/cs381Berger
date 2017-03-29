@@ -24,11 +24,20 @@ void GameMgr::init()
     light->setPosition(20, 80, 50);
 
     // Entities
-    engine->entityMgr->CreateEntity(EntityType::ALIEN, Ogre::Vector3(-200, 0, 0), 1.5);
-    engine->entityMgr->CreateEntity(EntityType::CIGARETTE, Ogre::Vector3(100, 0, 0), 1.5);
-    engine->entityMgr->CreateEntity(EntityType::CVN, Ogre::Vector3(400, 0, 0), 1.5);
-    engine->entityMgr->CreateEntity(EntityType::FRIGATE, Ogre::Vector3(600, 0, 0), 1.5);
-    engine->entityMgr->selectedEntity = engine->entityMgr->CreateEntity(EntityType::DDG, Ogre::Vector3(800, 0, 0), 1.5);
+    int offset = -400;
+    auto CreateEntity = [this, &offset](EntityType type) -> Entity381*
+    {
+        auto entity = engine->entityMgr->CreateEntity(type, Ogre::Vector3(offset, 0, 0), 1.5); 
+        std::cout << "Created: " << entity->meshfile << std::endl;
+        offset += 200;
+        return entity;
+    };
+
+    CreateEntity(EntityType::ALIEN)->isSelected = true;
+    CreateEntity(EntityType::CIGARETTE);
+    CreateEntity(EntityType::CVN);
+    CreateEntity(EntityType::FRIGATE);
+    CreateEntity(EntityType::DDG);
 
     // Environment
     engine->gfxMgr->MakeGround();

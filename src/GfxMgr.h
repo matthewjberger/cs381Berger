@@ -32,9 +32,9 @@ public:
     Ogre::Camera* mCamera;
     Ogre::SceneNode* mCameraNode;
 
-    void MakeGround();
-    void MakeSky();
-    void MakeFog();
+    void MakeGround() const;
+    void MakeSky() const;
+    void MakeFog() const;
 
 private:
     void InitResources();

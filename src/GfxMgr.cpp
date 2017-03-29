@@ -65,7 +65,8 @@ void GfxMgr::init()
 
     // Create a camera and attach it to a scene node
     mCamera = ogreSceneMgr->createCamera("MainCam");
-    mCamera->lookAt(0, 0, 0);
+    mCamera->setPosition(0, 200, 500);
+    mCamera->lookAt(Ogre::Vector3(0, 0, 0));
     mCameraNode = ogreSceneMgr->getRootSceneNode()->createChildSceneNode();
     mCameraNode->setPosition(0, 200, 500);
     mCameraNode->attachObject(mCamera);
@@ -83,7 +84,7 @@ void GfxMgr::stop()
     if (mRoot) delete mRoot;
 }
 
-void GfxMgr::MakeGround()
+void GfxMgr::MakeGround() const
 {
     Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
 
@@ -105,12 +106,12 @@ void GfxMgr::MakeGround()
     //groundEntity->setMaterialName("NavyCg");}
 }
 
-void GfxMgr::MakeSky()
+void GfxMgr::MakeSky() const
 {
     ogreSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 }
 
-void GfxMgr::MakeFog()
+void GfxMgr::MakeFog() const
 {
     Ogre::ColourValue fadeColour(0.9, 0.9, 0.9);
     mWindow->getViewport(0)->setBackgroundColour(fadeColour);
