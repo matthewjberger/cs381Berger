@@ -14,8 +14,8 @@ public:
 
     GameMgr(Engine *eng) : Mgr(eng) {}
 
-    void tick(float dt);
-    void init();
-    void load_level();
-    void stop();
+    void tick(float dt) override;
+    void init() override;
+    void loadLevel() override;
+    void stop() override;
 };

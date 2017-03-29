@@ -6,34 +6,26 @@
 #pragma once
 
 #include "mgr.h"
-
-#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-#  include <OIS/OISEvents.h>
-#  include <OIS/OISInputManager.h>
-#  include <OIS/OISKeyboard.h>
-#  include <OIS/OISMouse.h>
-
-#  include <OGRE/SdkTrays.h>
-#  include <OGRE/SdkCameraMan.h>
-#else
-#  include <OISEvents.h>
-#  include <OISInputManager.h>
-#  include <OISKeyboard.h>
-#  include <OISMouse.h>
-
-#  include <SdkTrays.h>
-#  include <SdkCameraMan.h>
-#endif
+#include "GlobalIncludes.h"
 
 class InputMgr :
     public Mgr,
     public Ogre::WindowEventListener,
     public Ogre::FrameListener
+    //public OIS::KeyListener,
+    //public OIS::MouseListener,
+    //OgreBites::SdkTrayListener
 {
 
 public:
 
-    InputMgr(Engine *eng) : Mgr(eng) {}
+    InputMgr(Engine *eng) :
+        Mgr(eng),
+        keyTime(0.2f),
+        selectionTime(0.2f),
+        keyboardTimer(keyTime),
+        selectionTimer(selectionTime)
+    {}
 
     void tick(float dt) override;
     void init() override;
@@ -47,7 +39,18 @@ public:
     OIS::Keyboard* mKeyboard;
 
 private:
-    virtual void windowResized(Ogre::RenderWindow* rw);
-    virtual void windowClosed(Ogre::RenderWindow* rw);
+    void windowResized(Ogre::RenderWindow* rw) override;
+    void windowClosed(Ogre::RenderWindow* rw) override;
 
+    bool frameRenderingQueued(const Ogre::FrameEvent& fe) override;
+    void updateDesiredSpeedHeading(const Ogre::FrameEvent& fe);
+    void updateSelection(float dt);;
+    void updateCamera(const Ogre::FrameEvent& fe);
+
+    float keyTime;
+    float selectionTime;
+    float keyboardTimer;
+    float selectionTimer;
+    Ogre::Vector3 position;
+    Ogre::Vector3 velocity;
 };

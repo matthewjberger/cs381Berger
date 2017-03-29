@@ -12,7 +12,6 @@ void InputMgr::tick(float dt)
     if (window->isClosed())
         return;
 
-    //Need to capture/update each device
     mKeyboard->capture();
     mMouse->capture();
 
@@ -27,9 +26,9 @@ void InputMgr::init()
 {
     window = engine->gfxMgr->mWindow;
     root = engine->gfxMgr->mRoot;
-    mInputManager = 0;
-    mMouse = 0;
-    mKeyboard = 0;
+    mInputManager = nullptr;
+    mMouse = nullptr;
+    mKeyboard = nullptr;
 
     Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
     OIS::ParamList pl;
@@ -55,7 +54,6 @@ void InputMgr::init()
 
 void InputMgr::loadLevel()
 {
-
 }
 
 void InputMgr::stop()
@@ -92,4 +90,81 @@ void InputMgr::windowClosed(Ogre::RenderWindow* rw)
             mInputManager = 0;
         }
     }
+}
+
+bool InputMgr::frameRenderingQueued(const Ogre::FrameEvent& fe)
+{
+    mKeyboard->capture();
+    if(mKeyboard->isKeyDown(OIS::KC_ESCAPE))
+    {
+        engine->keepRunning = false;
+        return false;
+    }
+    updateCamera(fe);
+    updateDesiredSpeedHeading(fe);
+    updateSelection(fe.timeSinceLastFrame);
+    return true;
+}
+
+void InputMgr::updateDesiredSpeedHeading(const Ogre::FrameEvent& fe)
+{
+    keyboardTimer -= fe.timeSinceLastEvent;
+
+    if (engine->entityMgr->selectedEntity) {
+
+        if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_NUMPAD8)) {
+            keyboardTimer = keyTime;
+            engine->entityMgr->selectedEntity->desiredSpeed += 10;
+        }
+        if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_NUMPAD2)) {
+            keyboardTimer = keyTime;
+            engine->entityMgr->selectedEntity->desiredSpeed -= 10;
+        }
+        engine->entityMgr->selectedEntity->desiredSpeed = std::max(engine->entityMgr->selectedEntity->minSpeed,
+            std::min(engine->entityMgr->selectedEntity->maxSpeed, engine->entityMgr->selectedEntity->desiredSpeed));
+
+
+        if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_NUMPAD4)) {
+            keyboardTimer = keyTime;
+            engine->entityMgr->selectedEntity->desiredHeading -= 0.3f;
+        }
+        if ((keyboardTimer < 0) && mKeyboard->isKeyDown(OIS::KC_NUMPAD6)) {
+            keyboardTimer = keyTime;
+            engine->entityMgr->selectedEntity->desiredHeading += 0.3f;
+        }
+        //entityMgr->selectedEntity->desiredHeading = FixAngle(entityMgr->selectedEntity->desiredHeading);
+    }
+}
+
+void InputMgr::updateSelection(float dt)
+{
+    selectionTimer -= dt;
+    if (selectionTimer < 0 && mKeyboard->isKeyDown(OIS::KC_TAB)) {
+        selectionTimer = this->selectionTime;
+        engine->entityMgr->SelectNextEntity();
+    }
+}
+
+void InputMgr::updateCamera(const Ogre::FrameEvent& fe)
+{
+    float move = 400.0f;
+    float rotate = 0.5f;
+
+    Ogre::Vector3 dirVec = Ogre::Vector3::ZERO;
+
+    if (mKeyboard->isKeyDown(OIS::KC_W)) { dirVec.z -= move; }
+    if (mKeyboard->isKeyDown(OIS::KC_A)) { dirVec.x -= move; }
+    if (mKeyboard->isKeyDown(OIS::KC_S)) { dirVec.z += move; }
+    if (mKeyboard->isKeyDown(OIS::KC_D)) { dirVec.x += move; }
+
+    if (mKeyboard->isKeyDown(OIS::KC_R)) { dirVec.y += move; }
+    if (mKeyboard->isKeyDown(OIS::KC_F)) { dirVec.y -= move; }
+
+    if (mKeyboard->isKeyDown(OIS::KC_Q)) { engine->gfxMgr->mCameraNode->yaw(Ogre::Degree(rotate)); }
+    if (mKeyboard->isKeyDown(OIS::KC_E)) { engine->gfxMgr->mCameraNode->yaw(Ogre::Degree(-rotate)); }
+
+    if (mKeyboard->isKeyDown(OIS::KC_Z)) { engine->gfxMgr->mCameraNode->pitch(Ogre::Degree(rotate)); }
+    if (mKeyboard->isKeyDown(OIS::KC_X)) { engine->gfxMgr->mCameraNode->pitch(Ogre::Degree(-rotate)); }
+
+    engine->gfxMgr->mCameraNode->translate(dirVec * fe.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
 }

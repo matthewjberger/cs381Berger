@@ -53,6 +53,7 @@ void GfxMgr::InitResources()
         return;
 
     mWindow = mRoot->initialise(true, "CS381 - Assignment 3");
+    mWindow->setFullscreen(false, 800, 600);
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
     ogreSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC);
@@ -60,11 +61,14 @@ void GfxMgr::InitResources()
 
 void GfxMgr::init()
 {
-    // camera
+    InitResources();
+
+    // Create a camera and attach it to a scene node
     mCamera = ogreSceneMgr->createCamera("MainCam");
-    //mCamera->setPosition(0, 0, 80);
-    //mCamera->lookAt(0, 0, -300);
-    //mCamera->setNearClipDistance(5);
+    mCamera->lookAt(0, 0, 0);
+    mCameraNode = ogreSceneMgr->getRootSceneNode()->createChildSceneNode();
+    mCameraNode->setPosition(0, 200, 500);
+    mCameraNode->attachObject(mCamera);
 
     // viewport
     Ogre::Viewport* vp = mWindow->addViewport(mCamera);
@@ -72,26 +76,6 @@ void GfxMgr::init()
     mCamera->setAspectRatio(
         Ogre::Real(vp->getActualWidth()) /
         Ogre::Real(vp->getActualHeight()));
-
-    // TODO: Put this in game manager
-    // TODO: Add As3 doc to source control
-    /* Scene */
-
-    // Entities
-    engine->entityMgr->CreateEntity(EntityType::ALIEN, Ogre::Vector3(-200, 0, 0), 1.5);
-    engine->entityMgr->CreateEntity(EntityType::CIGARETTE, Ogre::Vector3(100, 0, 0), 1.5);
-    engine->entityMgr->CreateEntity(EntityType::CVN, Ogre::Vector3(400, 0, 0), 1.5);
-    engine->entityMgr->CreateEntity(EntityType::FRIGATE, Ogre::Vector3(600, 0, 0), 1.5);
-    engine->entityMgr->selectedEntity = engine->entityMgr->CreateEntity(EntityType::DDG, Ogre::Vector3(800, 0, 0), 1.5);
-
-    // Light
-    ogreSceneMgr->setAmbientLight(Ogre::ColourValue(.5, .5, .5));
-    Ogre::Light* light = ogreSceneMgr->createLight("MainLight");
-    light->setPosition(20, 80, 50);
-
-    // Environment
-    MakeGround();
-    MakeSky();
 }
 
 void GfxMgr::stop()
