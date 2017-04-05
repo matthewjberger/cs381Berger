@@ -119,7 +119,7 @@ void EntityMgr::ClearSelections()
 	{
         if(entity->isSelected)
         {
-            entity->isSelected = true;
+            entity->isSelected = false;
         }
 	}
 }

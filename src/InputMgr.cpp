@@ -132,6 +132,7 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
         std::string name = engine->gfxMgr->PerformRaycastFromCursorNearest(trayManager);
         if(name != "")
         {
+            engine->entityMgr->ClearSelections();
             engine->entityMgr->SelectEntity(name);
         }
     }
@@ -255,6 +256,7 @@ void InputMgr::UpdateSelection(float dt) {
     selectionTimer -= dt;
     if (selectionTimer < 0 && keyboard->isKeyDown(OIS::KC_TAB)) {
         selectionTimer = this->selectionTime;
+        engine->entityMgr->ClearSelections();
         engine->entityMgr->SelectNextEntity();
     }
 }
