@@ -15,7 +15,7 @@
 #include <SdkTrays.h>
 #include "mgr.h"
 
-class InputMgr : public Mgr, public OIS::KeyListener, public OIS::MouseListener, public Ogre::WindowEventListener, public OgreBites::SdkTrayListener
+class InputMgr : public Mgr, public OIS::KeyListener, public OIS::MouseListener, public Ogre::WindowEventListener, public OgreBites::SdkTrayListener, public Ogre::FrameListener
 {
 private:
 	void UpdateCamera(float dt);
@@ -36,6 +36,8 @@ protected:
     virtual bool mouseMoved(const OIS::MouseEvent &arg);
     virtual bool mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
     virtual bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
+
+    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override;
 
 public:
 

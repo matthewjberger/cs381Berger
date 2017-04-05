@@ -56,7 +56,7 @@ public:
     Ogre::OverlaySystem* overlaySystem;
 
 	void testScene();
-    void PerformRaycastFromCursor(OgreBites::SdkTrayManager*);
+    Ogre::MovableObject* PerformRaycastFromCursor(OgreBites::SdkTrayManager*);
 };
 
 

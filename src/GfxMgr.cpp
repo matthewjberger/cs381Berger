@@ -122,12 +122,13 @@ void GfxMgr::stop(){
 	return;
 }
 
-void GfxMgr::PerformRaycastFromCursor(OgreBites::SdkTrayManager* trayManager)
+Ogre::MovableObject* GfxMgr::PerformRaycastFromCursor(OgreBites::SdkTrayManager* trayManager)
 {
 
     // Setup ray query
     auto mouseRay = trayManager->getCursorRay(this->ogreCamera);
     raySceneQuery->setRay(mouseRay);
+    raySceneQuery->setSortByDistance(true);
 
     // Execute the ray query
     auto &result = raySceneQuery->execute();
@@ -136,6 +137,7 @@ void GfxMgr::PerformRaycastFromCursor(OgreBites::SdkTrayManager* trayManager)
     auto itr = result.begin();
     if(itr != result.end() && itr->movable)
     {
-
+        // Return the nearest movable object of the raycast
+        return itr->movable;
     }
 }

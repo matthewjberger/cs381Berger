@@ -58,6 +58,8 @@ InputMgr::InputMgr(Engine *engine) : Mgr(engine) {
     // SdkTray - To get the mouse cursor on the screen
     trayManager = new OgreBites::SdkTrayManager("InterfaceName", engine->gfxMgr->ogreRenderWindow, inputContext, this);
     trayManager->showCursor();
+
+    engine->gfxMgr->ogreRoot->addFrameListener(this);
 }
 
 InputMgr::~InputMgr() { // before gfxMgr destructor
@@ -74,8 +76,6 @@ void InputMgr::loadLevel() {
 
 void InputMgr::tick(float dt) {
 
-    keyboard->capture();
-    mouse->capture();
     if (keyboard->isKeyDown(OIS::KC_ESCAPE))
         engine->stop();
 
@@ -128,7 +128,8 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent &arg) {
 bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
     if(id == OIS::MB_Left)
     {
-        
+        auto object = engine->gfxMgr->PerformRaycastFromCursor(trayManager);
+        object->getParentSceneNode()->showBoundingBox(true);
     }
     else if(id == OIS::MB_Right)
     {
@@ -253,3 +254,13 @@ void InputMgr::UpdateSelection(float dt) {
         engine->entityMgr->SelectNextEntity();
     }
 }
+
+bool InputMgr::frameRenderingQueued(const Ogre::FrameEvent& evt)
+{
+    keyboard->capture();
+    mouse->capture();
+    trayManager->frameRenderingQueued(evt);
+    trayManager->refreshCursor();
+    return true;
+}
+
