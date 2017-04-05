@@ -129,14 +129,29 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent &arg) {
 bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
     if(id == OIS::MB_Left)
     {
-        std::string name = engine->gfxMgr->PerformRaycastFromCursorNearest(trayManager);
-        if(name != "")
+        auto results = *engine->gfxMgr->PerformRaycastFromCursorNearest(trayManager);
+        for(auto result : results)
         {
+            // Only use movable objects
+            if (!result.movable) continue;
+
+            // Skip the camera
+            if (result.movable->getName() == "MainCam") continue;
+
+            // Selected ocean
+            if(result.movable->getName() == "Ogre/MO6")
+            {
+                break;
+            }
+
+            // Selected an entity
+            // Use first entity that isn't the camera or ground
             engine->entityMgr->ClearSelections();
-            engine->entityMgr->SelectEntity(name);
+            engine->entityMgr->SelectEntity(result.movable->getName());
+            break;
         }
     }
-    else if(id == OIS::MB_Right)
+    else if (id == OIS::MB_Right)
     {
         //engine->gfxMgr->PerformRaycastFromCursorNearest(trayManager);
     }
@@ -211,7 +226,7 @@ void InputMgr::UpdateCamera(float dt) {
     if (keyboard->isKeyDown(OIS::KC_X)) { engine->gfxMgr->cameraNode->pitch(Ogre::Degree(-1 * DetermineRotation())); }
 
     cameraNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
-    if(cameraNode->getPosition().y < minimumHeight)
+    if (cameraNode->getPosition().y < minimumHeight)
     {
         cameraNode->setPosition(
             cameraNode->getPosition().x,

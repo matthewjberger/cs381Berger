@@ -22,7 +22,7 @@ GfxMgr::GfxMgr(Engine *eng): Mgr(eng) {
 	cf.load(resources);
 	loadConfig(cf);
 	configureRenderSystem();
-	ogreRenderWindow = ogreRoot->initialise(true, "381 Game Engine");
+	ogreRenderWindow = ogreRoot->initialise(true, "Matthew Berger - CS381 Game Engine");
 	createSceneManager();
 	initResources();
 	createCamera();
@@ -122,7 +122,7 @@ void GfxMgr::stop(){
 	return;
 }
 
-std::string GfxMgr::PerformRaycastFromCursorNearest(OgreBites::SdkTrayManager* trayManager)
+Ogre::RaySceneQueryResult* GfxMgr::PerformRaycastFromCursorNearest(OgreBites::SdkTrayManager* trayManager)
 {
     // Setup ray query
     auto mouseRay = trayManager->getCursorRay(this->ogreCamera);
@@ -131,18 +131,6 @@ std::string GfxMgr::PerformRaycastFromCursorNearest(OgreBites::SdkTrayManager* t
     raySceneQuery->setSortByDistance(true);
 
     // Execute the ray query
-    auto &results = raySceneQuery->execute();
-
-    // Determine results
-    for(auto result : results)
-    {
-        if(result.movable && 
-           result.movable->getName() != "MainCam" &&
-           result.movable->getName() != "Ogre/MO6") // TODO: Make this more generic later
-        {
-            return result.movable->getName();
-        }
-    }
-
-    return "";
+    auto results = &raySceneQuery->execute();
+    return results;
 }

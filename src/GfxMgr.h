@@ -56,7 +56,7 @@ public:
     Ogre::OverlaySystem* overlaySystem;
 
 	void testScene();
-    std::string PerformRaycastFromCursorNearest(OgreBites::SdkTrayManager*);
+    Ogre::RaySceneQueryResult* PerformRaycastFromCursorNearest(OgreBites::SdkTrayManager*);
 };
 
 
