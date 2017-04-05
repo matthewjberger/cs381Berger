@@ -1,4 +1,5 @@
 #include "Command.h"
+#include "Entity381.h"
 
 /* Move Command */
 

@@ -17,15 +17,12 @@
 #include <OgreCamera.h>
 #include <OgreSceneNode.h>
 #include <OgreViewport.h>
-#include <OgreEntity.h>
-#include <OgreWindowEventUtilities.h>
-
+#include <SdkTrays.h>
 
 class GfxMgr : public Mgr {
 
 private:
 	//Ogre variables
-	Ogre::Root *ogreRoot;
 	Ogre::Camera* ogreCamera;
 	Ogre::String resources;
 	Ogre::String plugins;
@@ -39,6 +36,9 @@ private:
 	Ogre::Viewport *ogreViewport;
 	void createViewport();
 
+    // Ray Casting
+    Ogre::RaySceneQuery* raySceneQuery;
+
 public:
 
 	GfxMgr(Engine *eng);
@@ -49,13 +49,14 @@ public:
 	virtual void loadLevel();
 	virtual void stop();
 
+	Ogre::Root *ogreRoot;
 	Ogre::RenderWindow* ogreRenderWindow;
 	Ogre::SceneManager* ogreSceneManager;
 	Ogre::SceneNode *cameraNode, *pitchNode;
-
+    Ogre::OverlaySystem* overlaySystem;
 
 	void testScene();
-
+    void PerformRaycastFromCursor(OgreBites::SdkTrayManager*);
 };
 
 

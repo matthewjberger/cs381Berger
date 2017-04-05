@@ -9,18 +9,19 @@
 #define INPUTMGR_H_
 
 #include <OgreWindowEventUtilities.h>
-#include <OISEvents.h>
 #include <OISInputManager.h>
 #include <OISKeyboard.h>
 #include <OISMouse.h>
+#include <SdkTrays.h>
 #include "mgr.h"
 
-class InputMgr : public Mgr, public OIS::KeyListener, public OIS::MouseListener, public Ogre::WindowEventListener
+class InputMgr : public Mgr, public OIS::KeyListener, public OIS::MouseListener, public Ogre::WindowEventListener, public OgreBites::SdkTrayListener
 {
 private:
 	void UpdateCamera(float dt);
 	void UpdateDesiredSpeedHeading(float dt);
 	void UpdateSelection(float dt);
+    void PerformRayCast();
 	float keyboardTimer;
 	float selectionTimer;
 	float keyTime;
@@ -49,6 +50,10 @@ public:
 	OIS::InputManager* oisInputManager;
     OIS::Mouse*        mouse;
     OIS::Keyboard*     keyboard;
+
+    // Ogre bites
+    OgreBites::SdkTrayManager* trayManager;
+    OgreBites::InputContext inputContext;
 };
 
 

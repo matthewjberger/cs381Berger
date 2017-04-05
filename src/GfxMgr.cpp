@@ -23,10 +23,12 @@ GfxMgr::GfxMgr(Engine *eng): Mgr(eng) {
 	loadConfig(cf);
 	configureRenderSystem();
 	ogreRenderWindow = ogreRoot->initialise(true, "381 Game Engine");
-	initResources();
 	createSceneManager();
+	initResources();
 	createCamera();
 	createViewport();
+
+    raySceneQuery = ogreSceneManager->createRayQuery(Ogre::Ray());
 
 }
 
@@ -56,6 +58,8 @@ void GfxMgr::initResources(){
 
 void GfxMgr::createSceneManager(){
 	ogreSceneManager = ogreRoot->createSceneManager(Ogre::ST_GENERIC);
+    overlaySystem = new Ogre::OverlaySystem();
+    ogreSceneManager->addRenderQueueListener(overlaySystem);
 }
 
 void GfxMgr::createCamera(){
@@ -116,4 +120,22 @@ void GfxMgr::stop(){
 	std::cout << "stopping engine and ogre" << std::endl;
 	ogreRoot->shutdown();
 	return;
+}
+
+void GfxMgr::PerformRaycastFromCursor(OgreBites::SdkTrayManager* trayManager)
+{
+
+    // Setup ray query
+    auto mouseRay = trayManager->getCursorRay(this->ogreCamera);
+    raySceneQuery->setRay(mouseRay);
+
+    // Execute the ray query
+    auto &result = raySceneQuery->execute();
+
+    // Determine results
+    auto itr = result.begin();
+    if(itr != result.end() && itr->movable)
+    {
+
+    }
 }

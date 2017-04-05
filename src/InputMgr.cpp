@@ -51,6 +51,13 @@ InputMgr::InputMgr(Engine *engine) : Mgr(engine) {
     windowResized(engine->gfxMgr->ogreRenderWindow);
     Ogre::WindowEventUtilities::addWindowEventListener(engine->gfxMgr->ogreRenderWindow, this);
 
+    // Input context
+    inputContext.mMouse = mouse;
+    inputContext.mKeyboard = keyboard;
+
+    // SdkTray - To get the mouse cursor on the screen
+    trayManager = new OgreBites::SdkTrayManager("InterfaceName", engine->gfxMgr->ogreRenderWindow, inputContext, this);
+    trayManager->showCursor();
 }
 
 InputMgr::~InputMgr() { // before gfxMgr destructor
@@ -119,6 +126,15 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent &arg) {
     return true;
 }
 bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
+    if(id == OIS::MB_Left)
+    {
+        
+    }
+    else if(id == OIS::MB_Right)
+    {
+        engine->gfxMgr->PerformRaycastFromCursor(trayManager);
+    }
+
     return true;
 }
 bool InputMgr::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
@@ -128,9 +144,13 @@ bool InputMgr::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id) 
 // Game specific input handling
 void InputMgr::UpdateCamera(float dt) {
     static auto normalSpeed = 100.0f;
-    static auto increasedSpeed = 150.0f;
+    static auto increasedSpeed = 200.0f;
     static auto normalRotationSpeed = 0.5f;
     static auto increasedRotationSpeed = 2.0f;
+
+    int minimumHeight = 20;
+
+    auto cameraNode = engine->gfxMgr->cameraNode;
 
     auto DetermineSpeed = [this]() -> float {
         return keyboard->isKeyDown(OIS::KC_LSHIFT) ? increasedSpeed : normalSpeed;
@@ -175,25 +195,23 @@ void InputMgr::UpdateCamera(float dt) {
     if (keyboard->isKeyDown(OIS::KC_F)) // Down
     {
         dirVec.y -= DetermineSpeed();
-
-        // Prevent movement below ground plane
-        // floor height + some padding
-        int floorLimit = 30;
-        if (dirVec.y < floorLimit)
-        {
-            dirVec.y = floorLimit;
-        }
     }
 
     // Yaw and Pitch controls
-    if (keyboard->isKeyDown(OIS::KC_Q)) { engine->gfxMgr->cameraNode->yaw(Ogre::Degree(DetermineSpeed())); }
-    if (keyboard->isKeyDown(OIS::KC_E)) { engine->gfxMgr->cameraNode->yaw(Ogre::Degree(-1 * DetermineSpeed())); }
+    if (keyboard->isKeyDown(OIS::KC_Q)) { engine->gfxMgr->cameraNode->yaw(Ogre::Degree(DetermineRotation())); }
+    if (keyboard->isKeyDown(OIS::KC_E)) { engine->gfxMgr->cameraNode->yaw(Ogre::Degree(-1 * DetermineRotation())); }
 
-    if (keyboard->isKeyDown(OIS::KC_Z)) { engine->gfxMgr->cameraNode->pitch(Ogre::Degree(DetermineSpeed())); }
-    if (keyboard->isKeyDown(OIS::KC_X)) { engine->gfxMgr->cameraNode->pitch(Ogre::Degree(-1 * DetermineSpeed())); }
+    if (keyboard->isKeyDown(OIS::KC_Z)) { engine->gfxMgr->cameraNode->pitch(Ogre::Degree(DetermineRotation())); }
+    if (keyboard->isKeyDown(OIS::KC_X)) { engine->gfxMgr->cameraNode->pitch(Ogre::Degree(-1 * DetermineRotation())); }
 
-    engine->gfxMgr->cameraNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
-
+    cameraNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
+    if(cameraNode->getPosition().y < minimumHeight)
+    {
+        cameraNode->setPosition(
+            cameraNode->getPosition().x,
+            minimumHeight,
+            cameraNode->getPosition().z);
+    }
 }
 
 void InputMgr::UpdateDesiredSpeedHeading(float dt) {
@@ -235,7 +253,3 @@ void InputMgr::UpdateSelection(float dt) {
         engine->entityMgr->SelectNextEntity();
     }
 }
-
-
-
-
