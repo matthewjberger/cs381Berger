@@ -37,8 +37,10 @@ public:
 class MoveTo : public Command {
 
 public:
-    MoveTo(Entity381* ent, Ogre::Vector3 location);
-    ~MoveTo();
+    MoveTo(Entity381* ent, Ogre::Vector3 location) :
+        Command(ent, COMMAND_TYPE::COMMAND_MOVE_TO),
+        targetLocation(location), MOVE_DISTANCE_THRESHOLD(0) {}
+    ~MoveTo(){}
 
     void init() override;
     void tick(float dt) override;
@@ -51,14 +53,16 @@ public:
 
 class Follow : public Command {
 public:
-    Follow(Entity381* ent);
-    ~Follow();
+    Follow(Entity381* ent, Entity381* targetEnt) :
+        Command(ent, COMMAND_TYPE::COMMAND_FOLLOW),
+        targetEntity(targetEnt) {}
+    ~Follow(){}
     
     void init() override;
     void tick(float dt) override;
     bool done() override;
 
-    Entity381* targetEnt;
+    Entity381* targetEntity;
 };
 
 
