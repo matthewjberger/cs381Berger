@@ -7,6 +7,7 @@
 
 #include "Entity381.h"
 #include "Aspect.h"
+#include "UnitAI.h"
 
 unsigned int Entity381::nextId = 0;
 
@@ -22,8 +23,10 @@ Entity381::Entity381(EntityType entType, Ogre::Vector3 pos, float heading){
 	this->aspects.clear();
 	Renderable *r = new Renderable(this);
 	Physics *p = new Physics(this);
+    UnitAI *ai = new UnitAI(this);
 	this->aspects.push_front(r);
 	this->aspects.push_front(p);
+	this->aspects.push_front(ai);
 
 	this->entityId = Entity381::nextId++;
 
