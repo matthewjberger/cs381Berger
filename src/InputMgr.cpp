@@ -129,12 +129,15 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent &arg) {
 bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
     if(id == OIS::MB_Left)
     {
-        auto object = engine->gfxMgr->PerformRaycastFromCursor(trayManager);
-        object->getParentSceneNode()->showBoundingBox(true);
+        std::string name = engine->gfxMgr->PerformRaycastFromCursorNearest(trayManager);
+        if(name != "")
+        {
+            engine->entityMgr->SelectEntity(name);
+        }
     }
     else if(id == OIS::MB_Right)
     {
-        engine->gfxMgr->PerformRaycastFromCursor(trayManager);
+        //engine->gfxMgr->PerformRaycastFromCursorNearest(trayManager);
     }
 
     return true;

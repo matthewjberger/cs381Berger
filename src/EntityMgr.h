@@ -43,6 +43,8 @@ public:
 	void CreateOgreEntityAndNode(Entity381 *ent);
 	//void Tick(float dt);
 	void SelectNextEntity();
+    void SelectEntity(std::string name);
+    void ClearSelections();
 
 
 };

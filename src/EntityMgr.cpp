@@ -101,3 +101,26 @@ void EntityMgr::SelectNextEntity(){
 
 }
 
+void EntityMgr::SelectEntity(std::string name)
+{
+	for (auto entity : entities)
+	{
+        if (entity->ogreEntity->getName() != name) continue;
+        if(!entity->isSelected)
+        {
+            entity->isSelected = true;
+        }
+	}
+}
+
+void EntityMgr::ClearSelections()
+{
+	for (auto entity : entities)
+	{
+        if(entity->isSelected)
+        {
+            entity->isSelected = true;
+        }
+	}
+}
+
