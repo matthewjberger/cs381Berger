@@ -31,7 +31,8 @@ InputMgr::InputMgr(Engine *engine) : Mgr(engine) {
     // insert the following lines right before calling mInputSystem = OIS::InputManager::createInputSystem( paramList );
 #if defined OIS_WIN32_PLATFORM
     pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_FOREGROUND")));
-    pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_NONEXCLUSIVE")));
+    //pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_NONEXCLUSIVE")));
+    pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_EXCLUSIVE")));
     pl.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_FOREGROUND")));
     pl.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_NONEXCLUSIVE")));
 #elif defined OIS_LINUX_PLATFORM
