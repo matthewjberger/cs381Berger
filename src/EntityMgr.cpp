@@ -124,3 +124,12 @@ void EntityMgr::ClearSelections()
 	}
 }
 
+Entity381* EntityMgr::GetEntity(std::string name)
+{
+	for (auto entity : entities)
+	{
+        if (entity->ogreEntity->getName() == name) return entity;
+	}
+}
+
+

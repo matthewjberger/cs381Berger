@@ -57,6 +57,7 @@ public:
 
 	void testScene();
     Ogre::RaySceneQueryResult* PerformRaycastFromCursorNearest(OgreBites::SdkTrayManager*);
+    std::pair<bool, Ogre::Real> RaycastPointOnPlane(OgreBites::SdkTrayManager*, const Ogre::Plane& p);
 };
 
 

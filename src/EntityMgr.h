@@ -42,6 +42,7 @@ public:
 	Entity381 *CreateEntity(EntityType entityType, Ogre::Vector3 pos, float yaw = 0);
 	void CreateOgreEntityAndNode(Entity381 *ent);
 	//void Tick(float dt);
+    Entity381* GetEntity(std::string name);
 	void SelectNextEntity();
     void SelectEntity(std::string name);
     void ClearSelections();

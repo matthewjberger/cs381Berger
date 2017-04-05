@@ -134,3 +134,9 @@ Ogre::RaySceneQueryResult* GfxMgr::PerformRaycastFromCursorNearest(OgreBites::Sd
     auto results = &raySceneQuery->execute();
     return results;
 }
+
+std::pair<bool, Ogre::Real> GfxMgr::RaycastPointOnPlane(OgreBites::SdkTrayManager* trayManager, const Ogre::Plane& p)
+{
+    auto mouseRay = trayManager->getCursorRay(this->ogreCamera);
+    return mouseRay.intersects(p);
+}

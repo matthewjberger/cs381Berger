@@ -7,7 +7,7 @@ void UnitAI::Tick(float dt)
         command->tick(dt);
     }
 
-    if(commands.front()->done())
+    if (commands.size() > 0 && commands.front()->done())
     {
         commands.pop_front();
     }

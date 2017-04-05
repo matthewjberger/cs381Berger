@@ -7,6 +7,7 @@
 
 #include "InputMgr.h"
 #include "engine.h"
+#include "UnitAI.h"
 
 
 InputMgr::InputMgr(Engine *engine) : Mgr(engine) {
@@ -139,10 +140,7 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
             if (result.movable->getName() == "MainCam") continue;
 
             // Selected ocean
-            if(result.movable->getName() == "Ogre/MO6")
-            {
-                break;
-            }
+            if (result.movable->getName() == "Ogre/MO6") break;
 
             // Selected an entity
             // Use first entity that isn't the camera or ground
@@ -153,7 +151,36 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
     }
     else if (id == OIS::MB_Right)
     {
-        //engine->gfxMgr->PerformRaycastFromCursorNearest(trayManager);
+        auto results = *engine->gfxMgr->PerformRaycastFromCursorNearest(trayManager);
+        for(auto result : results)
+        {
+            // Only use movable objects
+            if (!result.movable) continue;
+
+            // Skip the camera
+            if (result.movable->getName() == "MainCam") continue;
+
+            // Selected ocean
+            if (result.movable->getName() == "Ogre/MO6")
+            {
+                if(keyboard->isKeyDown(OIS::KC_LSHIFT))
+                {
+                    auto entity = engine->entityMgr->GetEntity(result.movable->getName());
+                    //dynamic_cast<UnitAI*>(entity->aspects.front());
+                    // TODO: Queue and add commands here
+                }
+
+	            Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0); // fake the ocean plane
+                auto pointPair = engine->gfxMgr->RaycastPointOnPlane(trayManager, plane);
+                break;
+            }
+
+            // Selected an entity
+            // Use first entity that isn't the camera or ground
+            engine->entityMgr->ClearSelections();
+            engine->entityMgr->SelectEntity(result.movable->getName());
+            break;
+        }
     }
 
     return true;
