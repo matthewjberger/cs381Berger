@@ -18,8 +18,8 @@ public:
 
     std::list<Command*> commands;
 
-    UnitAI(Entity381* ent);
-    ~UnitAI();
+    UnitAI(Entity381* ent) : Aspect(ent) {}
+    ~UnitAI(){};
 
     void Tick(float dt);
     void SetCommand(Command *c);
