@@ -1,56 +1,56 @@
-//============================================
-// Name        : GfxMgr.h 
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
-#pragma once
+/*
+ * inputMgr.h
+ *
+ *  Created on: Mar 11, 2017
+ *      Author: sushil
+ */
 
+#ifndef INPUTMGR_H_
+#define INPUTMGR_H_
+
+#include <OgreWindowEventUtilities.h>
+#include <OISEvents.h>
+#include <OISInputManager.h>
+#include <OISKeyboard.h>
+#include <OISMouse.h>
 #include "mgr.h"
-#include "GlobalIncludes.h"
 
-class InputMgr :
-    public Mgr,
-    public Ogre::WindowEventListener,
-    public Ogre::FrameListener
-    //public OIS::KeyListener,
-    //public OIS::MouseListener,
-    //OgreBites::SdkTrayListener
+class InputMgr : public Mgr, public OIS::KeyListener, public OIS::MouseListener, public Ogre::WindowEventListener
 {
+private:
+	void UpdateCamera(float dt);
+	void UpdateDesiredSpeedHeading(float dt);
+	void UpdateSelection(float dt);
+	float keyboardTimer;
+	float selectionTimer;
+	float keyTime;
+	float selectionTime;
+
+protected:
+	virtual void windowResized(Ogre::RenderWindow *rw);
+	virtual void windowClosed(Ogre::RenderWindow *rw);
+
+    virtual bool keyPressed(const OIS::KeyEvent &arg);
+    virtual bool keyReleased(const OIS::KeyEvent &arg);
+    virtual bool mouseMoved(const OIS::MouseEvent &arg);
+    virtual bool mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
+    virtual bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 
 public:
 
-    InputMgr(Engine *eng) :
-        Mgr(eng),
-        keyTime(0.2f),
-        selectionTime(0.2f),
-        keyboardTimer(keyTime),
-        selectionTimer(selectionTime)
-    {}
+	InputMgr(Engine *engine);
+	~InputMgr();
+	virtual void init();
+	virtual void tick(float dt);
+	virtual void loadLevel();
+	virtual void stop();
 
-    void tick(float dt) override;
-    void init() override;
-    void loadLevel() override;
-    void stop() override;
-
-    Ogre::Root* root;
-    Ogre::RenderWindow* window;
-    OIS::InputManager* mInputManager;
-    OIS::Mouse* mMouse;
-    OIS::Keyboard* mKeyboard;
-
-private:
-    void windowResized(Ogre::RenderWindow* rw) override;
-    void windowClosed(Ogre::RenderWindow* rw) override;
-
-    bool frameRenderingQueued(const Ogre::FrameEvent& fe) override;
-    void updateDesiredSpeedHeading(const Ogre::FrameEvent& fe);
-    void updateSelection(float dt);;
-    void updateCamera(const Ogre::FrameEvent& fe);
-
-    float keyTime;
-    float selectionTime;
-    float keyboardTimer;
-    float selectionTimer;
-    Ogre::Vector3 position;
-    Ogre::Vector3 velocity;
+	//OIS Input devices
+	OIS::InputManager* oisInputManager;
+    OIS::Mouse*        mouse;
+    OIS::Keyboard*     keyboard;
 };
+
+
+
+#endif /* INPUTMGR_H_ */

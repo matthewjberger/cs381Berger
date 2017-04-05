@@ -42,11 +42,12 @@ void EntityMgr::stop(){
 void EntityMgr::CreateOgreEntityAndNode(Entity381 *ent){
 
 	if(ent) {
-		ent->ogreEntity = engine->gfxMgr->ogreSceneMgr->createEntity(ent->meshfile);
-		ent->ogreSceneNode = engine->gfxMgr->ogreSceneMgr->getRootSceneNode()->createChildSceneNode(ent->pos);
+		ent->ogreEntity = engine->gfxMgr->ogreSceneManager->createEntity(ent->meshfile);
+		ent->ogreSceneNode = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode(ent->pos);
 		ent->ogreSceneNode->attachObject(ent->ogreEntity);
 		ent->ogreSceneNode->yaw(Ogre::Radian(ent->heading));
 	}
+
 }
 
 Entity381* EntityMgr::CreateEntity(EntityType entityType, Ogre::Vector3 position, float heading){

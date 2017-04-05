@@ -9,9 +9,9 @@
 #define ENGINE_H_
 
 #include "GfxMgr.h"
-#include "InputMgr.h"
+#include "inputMgr.h"
 #include "EntityMgr.h"
-#include "GameMgr.h"
+#include "gameMgr.h"
 
 class Engine {
 private:

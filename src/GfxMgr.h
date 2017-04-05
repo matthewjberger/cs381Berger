@@ -1,41 +1,63 @@
-//============================================
-// Name        : GfxMgr.h 
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
+/*
+ * GxfMgr.h
+ *
+ *  Created on: Mar 9, 2017
+ *      Author: sushil
+ */
 
-#pragma once
+#ifndef GFXMGR_H_
+#define GFXMGR_H_
 
 #include "mgr.h"
-#include "GlobalIncludes.h"
 
-class Engine;
-class OgreGraphics;
+#include <OgreRoot.h>
+#include <OgreConfigFile.h>
+#include <OgreRenderWindow.h>
+#include <OgreSceneManager.h>
+#include <OgreCamera.h>
+#include <OgreSceneNode.h>
+#include <OgreViewport.h>
+#include <OgreEntity.h>
+#include <OgreWindowEventUtilities.h>
 
-class GfxMgr : public Mgr
-{
-public:
 
-    GfxMgr(Engine *eng) : Mgr(eng) {}
-    ~GfxMgr(){}
-
-    void tick(float dt) override;
-    void init() override;
-    void loadLevel() override {};
-    void stop() override;
-
-    Ogre::Root* mRoot;
-    Ogre::RenderWindow* mWindow;
-    Ogre::String mResourcesCfg;
-    Ogre::String mPluginsCfg;
-    Ogre::SceneManager* ogreSceneMgr;
-    Ogre::Camera* mCamera;
-    Ogre::SceneNode* mCameraNode;
-
-    void MakeGround() const;
-    void MakeSky() const;
-    void MakeFog() const;
+class GfxMgr : public Mgr {
 
 private:
-    void InitResources();
+	//Ogre variables
+	Ogre::Root *ogreRoot;
+	Ogre::Camera* ogreCamera;
+	Ogre::String resources;
+	Ogre::String plugins;
+	Ogre::ConfigFile cf;
+	void loadConfig(Ogre::ConfigFile cf);
+	void configureRenderSystem();
+	void initResources();
+
+	void createSceneManager();
+	void createCamera();
+	Ogre::Viewport *ogreViewport;
+	void createViewport();
+
+public:
+
+	GfxMgr(Engine *eng);
+	~GfxMgr();
+
+	virtual void tick(float dt);
+	virtual void init();
+	virtual void loadLevel();
+	virtual void stop();
+
+	Ogre::RenderWindow* ogreRenderWindow;
+	Ogre::SceneManager* ogreSceneManager;
+	Ogre::SceneNode *cameraNode, *pitchNode;
+
+
+	void testScene();
+
 };
+
+
+
+#endif /* GFXMGR_H_ */

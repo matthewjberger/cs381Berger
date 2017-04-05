@@ -1,21 +1,34 @@
-//============================================
-// Name        : GameMgr.h
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
+/*
+ * gameMgr.h
+ *
+ *  Created on: Mar 11, 2017
+ *      Author: sushil
+ */
 
-#pragma once
+#ifndef GAMEMGR_H_
+#define GAMEMGR_H_
 
 #include "mgr.h"
 
-class GameMgr : public Mgr
-{
+
+class GameMgr : public Mgr {
+
+private:
+	void createEnts();
+	void createSky();
+	void createGround();
+
+
 public:
+	GameMgr(Engine *engine);
+	~GameMgr();
+	virtual void init();
+	virtual void tick(float dt);
+	virtual void loadLevel();
+	virtual void stop();
 
-    GameMgr(Engine *eng) : Mgr(eng) {}
-
-    void tick(float dt) override;
-    void init() override;
-    void loadLevel() override;
-    void stop() override;
 };
+
+
+
+#endif /* GAMEMGR_H_ */

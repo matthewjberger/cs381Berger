@@ -6,7 +6,7 @@
  */
 
 #include "engine.h"
-#include "OgreTimer.h"
+#include <OgreTimer.h>
 
 Engine::Engine(){
 	gfxMgr = 0;
@@ -14,6 +14,7 @@ Engine::Engine(){
 	entityMgr = 0;
 	gameMgr = 0;
 	keepRunning = true;
+
 }
 
 Engine::~Engine(){
@@ -58,13 +59,17 @@ void Engine::shutdown(){
 }
 void Engine::run(){
 	Ogre::Timer* timer = new Ogre::Timer();
+	std::cout << "Got ogre timer" << std::endl;
 	float oldTime = timer->getMilliseconds()/1000.0f;
+	std::cout << "Time: " << oldTime << std::endl;
 	float newTime;
 	float dt = 0.001f;
+	std::cout << "Entering while loop" << std::endl;
 	while(keepRunning){
 		newTime = timer->getMilliseconds()/1000.0f;
 		dt = newTime - oldTime;
 		oldTime = newTime;
+//		std::cout << "dt: " << dt << std::endl;
 		tickAll(dt);
 	}
 	shutdown();

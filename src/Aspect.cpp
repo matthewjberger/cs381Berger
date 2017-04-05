@@ -7,7 +7,6 @@
 
 #include "Aspect.h"
 #include "Utils.h"
-#include "Entity381.h"
 
 Aspect::Aspect (Entity381 * ent){
 	this->entity = ent;
@@ -77,7 +76,6 @@ void Physics::Tick(float dt){
 	//std::cout << "Heading: " << entity->heading * RadToDegree << " DesiredHeading: " << entity->desiredHeading * RadToDegree << std::endl;
 	//std::cout << "Speed  : " << entity->speed << " DesiredSpeed:   " << entity->desiredSpeed << std::endl;
 	//std::cout << "cos: " << cos(entity->heading) << " sin: " << sin(entity->desiredHeading) << std::endl;
-	
 	entity->vel = Ogre::Vector3(cos(entity->heading) * entity->speed, 0, sin(entity->heading) * entity->speed);
 	entity->pos += entity->vel * dt;
 

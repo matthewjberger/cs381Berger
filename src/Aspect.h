@@ -8,7 +8,7 @@
 #ifndef ASPECT_H_
 #define ASPECT_H_
 
-class Entity381;
+#include "Entity381.h"
 
 class Aspect {
 

@@ -7,7 +7,6 @@
 
 #ifndef UTILS_H_
 #define UTILS_H_
-#include <OgreMath.h>
 
 
 inline float clamp(float value, float lower, float upper){

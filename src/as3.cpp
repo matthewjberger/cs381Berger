@@ -1,15 +1,13 @@
 //============================================================================
-// Name        : as3.cpp
+// Name        : as2.cpp
 // Author      : Sushil J Louis
 // Version     :
 // Copyright   : All rights reserved
-// Description : Assignment 3
+// Description : Assignment 2
 //============================================================================
 
 #include "as3.h"
 #include "Utils.h"
-#include "engine.h"
-#include <OgreException.h>
 
 As3::As3(void)
 {

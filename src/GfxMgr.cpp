@@ -1,119 +1,119 @@
-//============================================
-// Name        : GfxMgr.cpp
-// Author      : Matthew J. Berger
-// Email       : matthewberger@nevada.unr.edu
-//============================================
+/*
+ * GfxMgr.cpp
+ *
+ *  Created on: Mar 9, 2017
+ *      Author: sushil
+ */
 
 #include "GfxMgr.h"
 #include "engine.h"
-
-void GfxMgr::tick(float dt)
-{
-    mRoot->renderOneFrame();
-}
-
-void GfxMgr::InitResources()
-{
-    mResourcesCfg = Ogre::StringUtil::BLANK;
-    mPluginsCfg = Ogre::StringUtil::BLANK;
-    ogreSceneMgr = nullptr;
-    mCamera = nullptr;
-    mCameraNode = nullptr;
+GfxMgr::GfxMgr(Engine *eng): Mgr(eng) {
 
 #ifdef _DEBUG
-    mResourcesCfg = "resources_d.cfg";
-    mPluginsCfg = "plugins_d.cfg";
+	resources = "resources_d.cfg";
+	plugins   = "plugins_d.cfg";
 #else
-    mResourcesCfg = "resources.cfg";
-    mPluginsCfg = "plugins.cfg";
+	resources = "resources.cfg";
+	plugins   = "plugins.cfg";
 #endif
 
-    mRoot = new Ogre::Root(mPluginsCfg);
-    // Load resource paths from config file
-    Ogre::ConfigFile cf;
-    cf.load(mResourcesCfg);
-    // Go through all sections & settings in the file
-    Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
-    Ogre::String secName, typeName, archName;
-    while (seci.hasMoreElements())
-    {
-        secName = seci.peekNextKey();
-        Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
-        Ogre::ConfigFile::SettingsMultiMap::iterator i;
-        for (i = settings->begin(); i != settings->end(); ++i)
-        {
-            typeName = i->first;
-            archName = i->second;
-            Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-                archName, typeName, secName);
-        }
-    }
+	ogreRoot = new Ogre::Root(plugins);
 
-    if (!(mRoot->restoreConfig() || mRoot->showConfigDialog()))
-        return;
+	cf.load(resources);
+	loadConfig(cf);
+	configureRenderSystem();
+	ogreRenderWindow = ogreRoot->initialise(true, "381 Game Engine");
+	initResources();
+	createSceneManager();
+	createCamera();
+	createViewport();
 
-    mWindow = mRoot->initialise(true, "CS381 - Assignment 3");
-    mWindow->setFullscreen(false, 800, 600);
-    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
-    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-    ogreSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC);
 }
 
-void GfxMgr::init()
-{
-    InitResources();
-
-    // Create a camera and attach it to a scene node
-    mCamera = ogreSceneMgr->createCamera("MainCam");
-    mCamera->setPosition(0, 200, 500);
-    mCamera->lookAt(Ogre::Vector3(0, 0, 0));
-    mCameraNode = ogreSceneMgr->getRootSceneNode()->createChildSceneNode();
-    mCameraNode->setPosition(0, 200, 500);
-    mCameraNode->attachObject(mCamera);
-
-    // viewport
-    Ogre::Viewport* vp = mWindow->addViewport(mCamera);
-    vp->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
-    mCamera->setAspectRatio(
-        Ogre::Real(vp->getActualWidth()) /
-        Ogre::Real(vp->getActualHeight()));
+void GfxMgr::loadConfig(Ogre::ConfigFile cf){
+	Ogre::String name, locType;
+	Ogre::ConfigFile::SectionIterator secIt = cf.getSectionIterator();
+	while(secIt.hasMoreElements()){
+		Ogre::ConfigFile::SettingsMultiMap* settings = secIt.getNext();
+		Ogre::ConfigFile::SettingsMultiMap::iterator it;
+		for(it = settings->begin(); it != settings->end(); ++it){
+			locType = it->first;
+			name = it->second;
+			Ogre::ResourceGroupManager::getSingleton().addResourceLocation(name, locType);
+		}
+	}
 }
 
-void GfxMgr::stop()
-{
-    if (mRoot) delete mRoot;
+void GfxMgr::configureRenderSystem(){
+	if(!(ogreRoot->restoreConfig() || ogreRoot->showConfigDialog()))
+		engine->stop();
 }
 
-void GfxMgr::MakeGround() const
-{
-    Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
-
-    Ogre::MeshManager::getSingleton().createPlane(
-        "ground",
-        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        plane,
-        15000, 15000, 20, 20,
-        true,
-        1, 5, 5,
-        Ogre::Vector3::UNIT_Z);
-
-    Ogre::Entity* groundEntity = ogreSceneMgr->createEntity("ground");
-    ogreSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
-    groundEntity->setCastShadows(false);
-    groundEntity->setMaterialName("Ocean2_HLSL_GLSL");
-    //groundEntity->setMaterialName("OceanHLSL_GLSL");
-    //groundEntity->setMaterialName("Ocean2_Cg");
-    //groundEntity->setMaterialName("NavyCg");}
+void GfxMgr::initResources(){
+	Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
+	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
-void GfxMgr::MakeSky() const
-{
-    ogreSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
+void GfxMgr::createSceneManager(){
+	ogreSceneManager = ogreRoot->createSceneManager(Ogre::ST_GENERIC);
 }
 
-void GfxMgr::MakeFog() const
-{
-    Ogre::ColourValue fadeColour(0.9, 0.9, 0.9);
-    mWindow->getViewport(0)->setBackgroundColour(fadeColour);
-    this->ogreSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0, 600, 900);
+void GfxMgr::createCamera(){
+	ogreCamera = ogreSceneManager->createCamera("MainCam");
+	ogreCamera->setPosition(0, 0, 0);
+	ogreCamera->setNearClipDistance(5);
+	cameraNode = ogreSceneManager->getRootSceneNode()->createChildSceneNode();
+	pitchNode = cameraNode->createChildSceneNode();
+	pitchNode->attachObject(ogreCamera);
+	cameraNode->setPosition(0, 100, 500);
+	ogreCamera->lookAt(0, 0, 0);
+
+}
+
+void GfxMgr::createViewport(){
+	ogreViewport = ogreRenderWindow->addViewport(ogreCamera);
+	ogreViewport->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
+	ogreCamera->setAspectRatio(Ogre::Real(ogreViewport->getActualWidth()) /
+											Ogre::Real(ogreViewport->getActualHeight()));
+}
+
+void GfxMgr::testScene(){
+	Ogre::Entity *ent = ogreSceneManager->createEntity("ogrehead.mesh");
+	Ogre::SceneNode* node = ogreSceneManager->getRootSceneNode()->createChildSceneNode();
+	node->attachObject(ent);
+	ogreSceneManager->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+	Ogre::Light* light = ogreSceneManager->createLight("MainLight");
+	light->setPosition(20, 80, 50);
+	std::cout << "Test scene done" << std::endl;
+}
+
+
+
+
+GfxMgr::~GfxMgr() {
+	delete ogreRoot; //after inputMgr destructor
+}
+
+void GfxMgr::init(){
+	std::cout << "Initialize gfx" << std::endl;
+
+	//testScene();
+}
+
+void GfxMgr::loadLevel(){
+
+}
+
+
+void GfxMgr::tick(float dt){
+	Ogre::WindowEventUtilities::messagePump();
+	//if(ogreRenderWindow->isClosed()) engine->stop();
+	if(!ogreRoot->renderOneFrame()) engine->stop();
+	return;
+}
+
+void GfxMgr::stop(){
+	std::cout << "stopping engine and ogre" << std::endl;
+	ogreRoot->shutdown();
+	return;
 }
