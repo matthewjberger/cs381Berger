@@ -5,7 +5,7 @@
  *      Author: sushil
  */
 
-#include "gameMgr.h"
+#include "GameMgr.h"
 #include "engine.h"
 #include <OgreMeshManager.h>
 

@@ -5,7 +5,7 @@
  *      Author: sushil
  */
 
-#include "inputMgr.h"
+#include "InputMgr.h"
 #include "engine.h"
 
 
