@@ -59,7 +59,8 @@ InputMgr::InputMgr(Engine *engine) : Mgr(engine) {
 
     // SdkTray - To get the mouse cursor on the screen
     trayManager = new OgreBites::SdkTrayManager("InterfaceName", engine->gfxMgr->ogreRenderWindow, inputContext, this);
-    trayManager->showCursor();
+    trayManager->hideCursor();
+    //trayManager->showCursor();
 
     engine->gfxMgr->ogreRoot->addFrameListener(this);
 }
@@ -81,7 +82,7 @@ void InputMgr::tick(float dt) {
     if (keyboard->isKeyDown(OIS::KC_ESCAPE))
         engine->stop();
 
-    UpdateCamera(dt);
+    //UpdateCamera(dt);
     UpdateDesiredSpeedHeading(dt);
     //UpdateSelection(dt);
 
@@ -115,77 +116,27 @@ void InputMgr::windowClosed(Ogre::RenderWindow* rw) {
 
 bool InputMgr::keyPressed(const OIS::KeyEvent &arg) {
     std::cout << "Key Pressed: " << arg.key << std::endl;
+    engine->gfxMgr->mCameraMan->injectKeyDown(arg);
     return true;
 }
 bool InputMgr::keyReleased(const OIS::KeyEvent &arg) {
     std::cout << "Checking key release" << std::endl;
-    if (arg.key == OIS::KC_TAB) {
-        engine->entityMgr->SelectNextEntity();
-    }
+    engine->gfxMgr->mCameraMan->injectKeyUp(arg);
     return true;
 }
 bool InputMgr::mouseMoved(const OIS::MouseEvent &arg) {
+    if (trayManager->injectMouseMove(arg)) return true;
+    engine->gfxMgr->mCameraMan->injectMouseMove(arg);
     return true;
 }
 bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
-    if(id == OIS::MB_Left)
-    {
-        auto results = *engine->gfxMgr->PerformRaycastFromCursorNearest(trayManager);
-        for(auto result : results)
-        {
-            // Only use movable objects
-            if (!result.movable) continue;
-
-            // Skip the camera
-            if (result.movable->getName() == "MainCam") continue;
-
-            // Selected ocean
-            if (result.movable->getName() == "Ogre/MO6") break;
-
-            // Selected an entity
-            // Use first entity that isn't the camera or ground
-            engine->entityMgr->ClearSelections();
-            engine->entityMgr->SelectEntity(result.movable->getName());
-            break;
-        }
-    }
-    else if (id == OIS::MB_Right)
-    {
-        auto results = *engine->gfxMgr->PerformRaycastFromCursorNearest(trayManager);
-        for(auto result : results)
-        {
-            // Only use movable objects
-            if (!result.movable) continue;
-
-            // Skip the camera
-            if (result.movable->getName() == "MainCam") continue;
-
-            // Selected ocean
-            if (result.movable->getName() == "Ogre/MO6")
-            {
-                if(keyboard->isKeyDown(OIS::KC_LSHIFT))
-                {
-                    auto entity = engine->entityMgr->GetEntity(result.movable->getName());
-                    //dynamic_cast<UnitAI*>(entity->aspects.front());
-                    // TODO: Queue and add commands here
-                }
-
-	            Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0); // fake the ocean plane
-                auto pointPair = engine->gfxMgr->RaycastPointOnPlane(trayManager, plane);
-                break;
-            }
-
-            // Selected an entity
-            // Use first entity that isn't the camera or ground
-            engine->entityMgr->ClearSelections();
-            engine->entityMgr->SelectEntity(result.movable->getName());
-            break;
-        }
-    }
-
+    if (trayManager->injectMouseDown(arg, id)) return true;
+    engine->gfxMgr->mCameraMan->injectMouseDown(arg,id);
     return true;
 }
 bool InputMgr::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
+    if (trayManager->injectMouseUp(arg, id)) return true;
+    engine->gfxMgr->mCameraMan->injectMouseUp(arg,id);
     return true;
 }
 
@@ -309,6 +260,7 @@ bool InputMgr::frameRenderingQueued(const Ogre::FrameEvent& evt)
     mouse->capture();
     trayManager->frameRenderingQueued(evt);
     trayManager->refreshCursor();
+    engine->gfxMgr->mCameraMan->frameRenderingQueued(evt);
     return true;
 }
 

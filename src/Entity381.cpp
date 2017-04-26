@@ -57,58 +57,20 @@ void Entity381::Tick(float dt){
 	}
 }
 
-Ddg::Ddg(Ogre::Vector3 pos, float heading) : Entity381(EntityType::DDG, pos, heading){
-	this->meshfile = "ddg51.mesh";
+PlayerShip::PlayerShip(Ogre::Vector3 pos, float heading) : Entity381(EntityType::PLAYER, pos, heading){
+	this->meshfile = "robot.mesh";
 	this->acceleration = 1.0f;
 	this->turnRate = 0.1f;
 }
 
-Ddg::~Ddg(){
-
+PlayerShip::~PlayerShip() {
 }
 
-Cigarette::Cigarette(Ogre::Vector3 pos, float heading) : Entity381(EntityType::CIGARETTE, pos, heading){
-	this->meshfile = "cigarette.mesh";
-	this->acceleration = 1.5f;
-	this->turnRate = 0.3f;
+EnemyShip::EnemyShip(Ogre::Vector3 pos, float heading) : Entity381(EntityType::ENEMY, pos, heading){
+	this->meshfile = "ninja.mesh";
+	this->acceleration = 1.0f;
+	this->turnRate = 0.1f;
 }
 
-Cigarette::~Cigarette(){
-
+EnemyShip::~EnemyShip() {
 }
-
-Alien::Alien(Ogre::Vector3 pos, float heading) : Entity381(EntityType::ALIEN, pos, heading){
-	this->meshfile = "alienship.mesh";
-	this->turnRate = 0.5f;
-	this->acceleration = 1.8f;
-}
-
-Alien::~Alien(){
-
-}
-
-Cvn::Cvn(Ogre::Vector3 pos, float heading) : Entity381(EntityType::CVN, pos, heading){
-	this->meshfile = "cvn68.mesh";
-	this->turnRate = 0.05f;
-	this->acceleration = 0.75f;
-}
-
-Cvn::~Cvn(){
-
-}
-
-Frigate::Frigate(Ogre::Vector3 pos, float heading) : Entity381(EntityType::FRIGATE, pos, heading){
-	this->meshfile = "sleek.mesh";
-	this->turnRate = 0.15f;
-	this->acceleration = 1.1f;
-}
-
-Frigate::~Frigate(){
-
-}
-
-
-
-
-
-

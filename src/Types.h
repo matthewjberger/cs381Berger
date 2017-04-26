@@ -10,11 +10,8 @@
 
 
 enum class EntityType {
-	DDG,
-	CVN,
-	FRIGATE,
-	CIGARETTE,
-	ALIEN
+	PLAYER,
+    ENEMY
 };
 
 

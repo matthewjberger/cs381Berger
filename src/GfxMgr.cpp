@@ -71,7 +71,7 @@ void GfxMgr::createCamera(){
 	pitchNode->attachObject(ogreCamera);
 	cameraNode->setPosition(0, 100, 500);
 	ogreCamera->lookAt(0, 0, 0);
-
+    mCameraMan = new OgreBites::SdkCameraMan(ogreCamera);
 }
 
 void GfxMgr::createViewport(){

@@ -54,24 +54,13 @@ Entity381* EntityMgr::CreateEntity(EntityType entityType, Ogre::Vector3 position
 
 	Entity381 *ent = 0;// = new Entity381(entityType, position, heading);
 	switch(entityType){
-	case EntityType::ALIEN:
-		ent = new Alien(position, heading);
+    case EntityType::PLAYER:
+		ent = new PlayerShip(position, heading);
 		break;
-	case EntityType::CIGARETTE:
-		ent = new Cigarette(position, heading);
+	case EntityType::ENEMY:
+		ent = new EnemyShip(position, heading);
 		break;
-	case EntityType::DDG:
-		ent = new Ddg(position, heading);
-		break;
-	case EntityType::CVN:
-		ent = new Cvn(position, heading);
-		break;
-	case EntityType::FRIGATE:
-		ent = new Frigate(position, heading);
-		break;
-	default:
-		ent = new Ddg(position, heading);
-		break;
+	default: break;
 	}
 
 	CreateOgreEntityAndNode(ent);

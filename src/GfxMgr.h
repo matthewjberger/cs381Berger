@@ -18,12 +18,12 @@
 #include <OgreSceneNode.h>
 #include <OgreViewport.h>
 #include <SdkTrays.h>
+#include <SdkCameraMan.h>
 
-class GfxMgr : public Mgr {
+class GfxMgr : public Mgr, public OgreBites::SdkTrayListener {
 
 private:
 	//Ogre variables
-	Ogre::Camera* ogreCamera;
 	Ogre::String resources;
 	Ogre::String plugins;
 	Ogre::ConfigFile cf;
@@ -54,6 +54,8 @@ public:
 	Ogre::SceneManager* ogreSceneManager;
 	Ogre::SceneNode *cameraNode, *pitchNode;
     Ogre::OverlaySystem* overlaySystem;
+    OgreBites::SdkCameraMan* mCameraMan;
+	Ogre::Camera* ogreCamera;
 
 	void testScene();
     Ogre::RaySceneQueryResult* PerformRaycastFromCursorNearest(OgreBites::SdkTrayManager*);

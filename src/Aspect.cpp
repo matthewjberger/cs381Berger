@@ -29,11 +29,13 @@ Renderable::~Renderable(){
 void Renderable::Tick(float dt){
 	entity->ogreSceneNode->setPosition(entity->pos);
 	entity->ogreSceneNode->setOrientation(Ogre::Quaternion::IDENTITY);
+    /*
 	entity->ogreSceneNode->yaw(Ogre::Radian(-entity->heading));
 	if (entity->isSelected)
 		entity->ogreSceneNode->showBoundingBox(true);
 	else
 		entity->ogreSceneNode->showBoundingBox(false);
+    */
 }
 
 Physics::Physics(Entity381 * ent): Aspect(ent) {

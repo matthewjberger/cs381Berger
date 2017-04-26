@@ -58,43 +58,19 @@ public:
 	std::list<Aspect*> aspects;
 };
 
-class Ddg: public Entity381 {
+class PlayerShip: public Entity381 {
 
 public:
-	Ddg(Ogre::Vector3 pos, float heading);
-	~Ddg();
+	PlayerShip(Ogre::Vector3 pos, float heading);
+	~PlayerShip();
 
 };
 
-class Cigarette: public Entity381 {
+class EnemyShip: public Entity381 {
 
 public:
-	Cigarette(Ogre::Vector3 pos, float heading);
-	~Cigarette();
+	EnemyShip(Ogre::Vector3 pos, float heading);
+	~EnemyShip();
 };
-
-class Alien: public Entity381 {
-
-public:
-	Alien(Ogre::Vector3 pos, float heading);
-	~Alien();
-};
-
-class Cvn: public Entity381 {
-
-public:
-	Cvn(Ogre::Vector3 pos, float heading);
-	~Cvn();
-};
-
-class Frigate: public Entity381 {
-
-public:
-	Frigate(Ogre::Vector3 pos, float heading);
-	~Frigate();
-};
-
-
-
 
 #endif /* ENTITY381_H_ */
